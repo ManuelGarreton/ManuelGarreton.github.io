@@ -4,634 +4,615 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Anatomía de la Bicicleta</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
-    --bg: #F5F2EC;
-    --surface: #FFFFFF;
-    --border: rgba(0,0,0,0.10);
-    --text-primary: #1A1A18;
-    --text-secondary: #5A5A56;
-    --text-muted: #9A9A94;
-    --accent: #1A1A18;
-    --radius: 14px;
-    --radius-sm: 8px;
-  }
+body { font-family: 'DM Sans', sans-serif; }
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text-primary);
-    min-height: 100dvh;
-    display: flex;
-    flex-direction: column;
-  }
+/* ── TAB BAR ── */
+.tabs-bar {
+  display: flex;
+  gap: 0;
+  background: #EEEAE0;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  padding: 0 1.5rem;
+}
+.tab-btn {
+  padding: 0.6rem 1.25rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8125rem;
+  color: #999;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  margin-bottom: -1px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.tab-btn.active { color: #1A1A18; border-bottom-color: #1A1A18; }
 
-  header {
-    padding: 1.5rem 2rem 1.25rem;
-    border-bottom: 0.5px solid var(--border);
-    background: var(--surface);
-    display: flex;
-    align-items: baseline;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-  }
+/* ── HEADER ── */
+#main-header {
+  padding: 1.125rem 1.5rem 1rem;
+  background: #fff;
+  border-bottom: 0.5px solid rgba(0,0,0,0.10);
+}
+#main-header h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(1.4rem, 3.5vw, 2rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: #1A1A18;
+}
 
-  header h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(1.5rem, 4vw, 2.25rem);
-    font-weight: 400;
-    letter-spacing: -0.02em;
-    color: var(--text-primary);
-  }
+/* ── VIEWS ── */
+.view { display: none; }
+.view.active { display: block; }
+#view-3.active { display: flex; flex-direction: column; }
 
-  header p {
-    font-size: 0.8125rem;
-    color: var(--text-muted);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
+/* ── SVG PARTS (shared) ── */
+.part { cursor: pointer; transition: opacity 0.18s ease; }
+.part:hover { opacity: 0.7; }
 
-  .hint {
-    text-align: center;
-    font-size: 0.8125rem;
-    color: var(--text-muted);
-    padding: 0.875rem 1rem;
-    letter-spacing: 0.02em;
-  }
+/* ═══════════════════════════════
+   OPTION 1 — Side panel
+═══════════════════════════════ */
+#view-1 {
+  background: #F5F2EC;
+  min-height: calc(100dvh - 100px);
+  padding: 1rem 1.25rem 1.5rem;
+}
+.layout-split { display: flex; gap: 1rem; align-items: flex-start; flex-wrap: wrap; }
+.svg-col { flex: 3; min-width: 280px; }
+.panel-col { flex: 1.3; min-width: 200px; max-width: 258px; }
 
-  main {
-    flex: 1;
-    padding: 1rem 1.25rem 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
+.info-panel {
+  background: #fff;
+  border: 0.5px solid rgba(0,0,0,0.10);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.panel-empty-msg {
+  padding: 2.5rem 1.25rem;
+  text-align: center;
+  font-size: 0.8125rem;
+  color: #9A9A94;
+  line-height: 1.6;
+}
+.panel-data { display: none; }
+.panel-header-box { padding: 1.25rem 1.25rem 1rem; border-bottom: 0.5px solid rgba(0,0,0,0.08); }
+.part-badge {
+  display: inline-block;
+  font-size: 0.625rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 20px;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+.pname { font-family: 'DM Serif Display', serif; font-size: 1.5rem; font-weight: 400; letter-spacing: -0.01em; margin-bottom: 2px; color: #1A1A18; }
+.pen { font-size: 0.75rem; color: #9A9A94; font-style: italic; }
+.panel-body { padding: 1rem 1.25rem; display: flex; flex-direction: column; gap: 0.875rem; }
+.flbl { font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.08em; color: #9A9A94; margin-bottom: 3px; }
+.fval { font-size: 0.8125rem; color: #1A1A18; line-height: 1.55; }
+.fact-box { margin: 0 1.25rem 1.25rem; background: #F5F2EC; border-radius: 8px; padding: 0.75rem 0.875rem; }
+.fact-box .fval { font-size: 0.75rem; color: #5A5A56; }
 
-  .layout {
-    display: flex;
-    gap: 1rem;
-    align-items: flex-start;
-    flex-wrap: wrap;
-  }
+/* ═══════════════════════════════
+   OPTION 2 — Full width + overlay
+═══════════════════════════════ */
+#view-2 { background: #F5F2EC; padding: 1rem 1.25rem 1.5rem; }
+.svg-full { border: 0.5px solid rgba(0,0,0,0.10); border-radius: 14px; background: #FAFAF7; overflow: hidden; display: block; width: 100%; }
 
-  #bsvg {
-    flex: 3;
-    min-width: 280px;
-    width: 100%;
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius);
-    background: #FAFAF7;
-    cursor: pointer;
-    display: block;
-  }
+#v2-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(240,237,231,0.62);
+  backdrop-filter: blur(3px);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+}
+#v2-overlay.open { display: flex; }
+#v2-card {
+  background: #fff;
+  border: 0.5px solid rgba(0,0,0,0.12);
+  border-radius: 18px;
+  box-shadow: 0 12px 48px rgba(0,0,0,0.14);
+  width: min(400px, 90vw);
+  position: relative;
+  animation: cardIn 0.22s ease;
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: scale(0.94) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.ov-inner { padding: 1.5rem; }
+.ov-close {
+  position: absolute; top: 1rem; right: 1rem;
+  width: 30px; height: 30px; border-radius: 50%;
+  background: rgba(0,0,0,0.07); border: none; cursor: pointer;
+  font-size: 17px; color: #5A5A56;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s;
+}
+.ov-close:hover { background: rgba(0,0,0,0.13); }
+.ov-name { font-family: 'DM Serif Display', serif; font-size: 1.75rem; font-weight: 400; margin: 0.5rem 0 0.25rem; color: #1A1A18; letter-spacing: -0.01em; }
+.ov-en { font-size: 0.75rem; color: #9A9A94; font-style: italic; margin-bottom: 1.25rem; }
+.ov-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+.ov-fact { background: #F5F2EC; border-radius: 8px; padding: 0.75rem 0.875rem; }
+.ov-fact .fval { font-size: 0.75rem; color: #5A5A56; }
 
-  .part { cursor: pointer; transition: opacity 0.18s ease; }
-  .part:hover { opacity: 0.72; }
+/* ═══════════════════════════════
+   OPTION 3 — Full width + bottom drawer
+═══════════════════════════════ */
+#view-3 {
+  background: #F5F2EC;
+  min-height: calc(100dvh - 100px);
+}
+.light-svg-area {
+  flex: 1;
+  padding: 1rem 1.25rem 1rem;
+  display: flex;
+  align-items: center;
+}
+#svg3 {
+  width: 100%;
+  border: 0.5px solid rgba(0,0,0,0.10);
+  border-radius: 14px;
+  background: #FAFAF7;
+  cursor: pointer;
+  display: block;
+}
 
-  /* INFO PANEL */
-  .panel {
-    flex: 1.3;
-    min-width: 200px;
-    max-width: 260px;
-    background: var(--surface);
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius);
-    overflow: hidden;
-  }
+#v3-drawer {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: #fff;
+  border-top: 0.5px solid rgba(0,0,0,0.10);
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 -8px 40px rgba(0,0,0,0.10);
+  transform: translateY(110%);
+  transition: transform 0.33s cubic-bezier(0.32, 0, 0.16, 1);
+  z-index: 200;
+}
+#v3-drawer.open { transform: translateY(0); }
+.drawer-handle { width: 36px; height: 4px; background: rgba(0,0,0,0.12); border-radius: 2px; margin: 12px auto 0; }
+.drawer-close {
+  position: absolute; top: 1rem; right: 1rem;
+  width: 30px; height: 30px; border-radius: 50%;
+  background: rgba(0,0,0,0.07); border: none;
+  cursor: pointer; font-size: 18px; color: #5A5A56;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s;
+}
+.drawer-close:hover { background: rgba(0,0,0,0.13); }
+.drawer-body { padding: 1.25rem 1.5rem 2.25rem; display: flex; gap: 1.5rem; flex-wrap: wrap; }
+.dr-main { min-width: 160px; }
+.dr-name { font-family: 'DM Serif Display', serif; font-size: 1.75rem; font-weight: 400; color: #1A1A18; letter-spacing: -0.01em; margin-bottom: 3px; }
+.dr-en { font-size: 0.75rem; color: #9A9A94; font-style: italic; }
+.dr-cols { display: flex; gap: 1rem; flex: 2; min-width: 220px; flex-wrap: wrap; }
+.dr-field { flex: 1; min-width: 140px; }
+.dr-lbl { font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.08em; color: #9A9A94; margin-bottom: 4px; }
+.dr-val { font-size: 0.8125rem; color: #1A1A18; line-height: 1.55; }
+.dr-fact { background: #F5F2EC; border-radius: 8px; padding: 0.75rem 0.875rem; flex: 1; min-width: 180px; }
+.dr-fact .dr-val { font-size: 0.75rem; color: #5A5A56; }
 
-  .panel-empty {
-    padding: 2.5rem 1.25rem;
-    text-align: center;
-  }
-
-  .panel-empty .icon {
-    width: 44px;
-    height: 44px;
-    margin: 0 auto 1rem;
-    border-radius: 50%;
-    background: var(--bg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .panel-empty p {
-    font-size: 0.8125rem;
-    color: var(--text-muted);
-    line-height: 1.6;
-  }
-
-  .panel-content {
-    display: none;
-  }
-
-  .panel-header {
-    padding: 1.25rem 1.25rem 1rem;
-    border-bottom: 0.5px solid var(--border);
-  }
-
-  .panel-badge {
-    display: inline-block;
-    font-size: 0.625rem;
-    letter-spacing: 0.09em;
-    text-transform: uppercase;
-    padding: 3px 9px;
-    border-radius: 20px;
-    margin-bottom: 0.625rem;
-    font-weight: 500;
-  }
-
-  .panel-header h2 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.5rem;
-    font-weight: 400;
-    letter-spacing: -0.01em;
-    margin-bottom: 2px;
-    line-height: 1.2;
-  }
-
-  .panel-header .subtitle {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    font-style: italic;
-  }
-
-  .panel-body {
-    padding: 1rem 1.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.875rem;
-  }
-
-  .field-label {
-    font-size: 0.625rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--text-muted);
-    margin-bottom: 3px;
-  }
-
-  .field-value {
-    font-size: 0.8125rem;
-    color: var(--text-primary);
-    line-height: 1.55;
-  }
-
-  .panel-fact {
-    margin: 0 1.25rem 1.25rem;
-    background: var(--bg);
-    border-radius: var(--radius-sm);
-    padding: 0.75rem 0.875rem;
-  }
-
-  .panel-fact .field-value {
-    font-size: 0.75rem;
-    color: var(--text-secondary);
-  }
-
-  /* COUNT BADGE */
-  .count-bar {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    padding: 0 0 0.25rem;
-  }
-
-  .count-chip {
-    font-size: 0.6875rem;
-    padding: 4px 10px;
-    border-radius: 20px;
-    border: 0.5px solid var(--border);
-    color: var(--text-muted);
-    background: var(--surface);
-    cursor: default;
-    transition: all 0.15s;
-  }
-
-  .count-chip.active {
-    background: var(--text-primary);
-    color: white;
-    border-color: var(--text-primary);
-  }
-
-  footer {
-    text-align: center;
-    padding: 1rem;
-    font-size: 0.6875rem;
-    color: var(--text-muted);
-    letter-spacing: 0.04em;
-    border-top: 0.5px solid var(--border);
-    background: var(--surface);
-  }
-
-  @media (max-width: 600px) {
-    main { padding: 0.75rem; }
-    .layout { flex-direction: column; }
-    .panel { max-width: 100%; width: 100%; }
-    header { padding: 1rem 1.25rem; }
-  }
+@media (max-width: 600px) {
+  .layout-split { flex-direction: column; }
+  .panel-col { max-width: 100%; width: 100%; }
+  .ov-grid { grid-template-columns: 1fr; }
+  .dark-svg-area { padding: 0.75rem; }
+}
 </style>
 </head>
 <body>
 
-<header>
+<!-- TAB BAR -->
+<nav class="tabs-bar">
+  <button class="tab-btn active" data-v="1">Opción 1</button>
+  <button class="tab-btn" data-v="2">Opción 2</button>
+  <button class="tab-btn" data-v="3">Opción 3</button>
+</nav>
+
+<!-- HEADER -->
+<header id="main-header">
   <h1>Anatomía de la Bicicleta</h1>
-  <p>Exposición interactiva · 15 componentes</p>
 </header>
 
-<p class="hint">Toca o haz clic en cualquier pieza para conocerla</p>
-
-<main>
-  <div class="layout">
-
-    <svg id="bsvg" viewBox="0 0 620 505" xmlns="http://www.w3.org/2000/svg"></svg>
-
-    <div class="panel">
-      <div class="panel-empty" id="panel-empty">
-        <div class="icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-            <circle cx="12" cy="12" r="10"/>
-            <path d="M12 16v-4M12 8h.01"/>
-          </svg>
-        </div>
-        <p>Selecciona una pieza de la bicicleta para ver su nombre, función y más.</p>
-      </div>
-
-      <div class="panel-content" id="panel-content">
-        <div class="panel-header">
-          <span class="panel-badge" id="p-badge"></span>
-          <h2 id="p-name"></h2>
-          <p class="subtitle" id="p-en"></p>
-        </div>
-        <div class="panel-body">
-          <div>
-            <p class="field-label">Función</p>
-            <p class="field-value" id="p-fn"></p>
+<!-- ══════════ VIEW 1 ══════════ -->
+<div id="view-1" class="view active">
+  <div class="layout-split">
+    <div class="svg-col">
+      <svg id="svg1" viewBox="0 0 620 505" xmlns="http://www.w3.org/2000/svg"
+        style="width:100%;border:0.5px solid rgba(0,0,0,0.10);border-radius:14px;background:#FAFAF7;cursor:pointer;display:block"></svg>
+    </div>
+    <div class="panel-col">
+      <div class="info-panel">
+        <p class="panel-empty-msg" id="v1-empty">Selecciona una pieza de la bicicleta</p>
+        <div class="panel-data" id="v1-data">
+          <div class="panel-header-box">
+            <span class="part-badge" id="v1-badge"></span>
+            <p class="pname" id="v1-name"></p>
+            <p class="pen" id="v1-en"></p>
           </div>
-          <div>
-            <p class="field-label">Material típico</p>
-            <p class="field-value" id="p-mat"></p>
+          <div class="panel-body">
+            <div><p class="flbl">Función</p><p class="fval" id="v1-fn"></p></div>
+            <div><p class="flbl">Material</p><p class="fval" id="v1-mat"></p></div>
           </div>
-        </div>
-        <div class="panel-fact">
-          <p class="field-label">Dato curioso</p>
-          <p class="field-value" id="p-fact"></p>
+          <div class="fact-box">
+            <p class="flbl">Dato curioso</p>
+            <p class="fval" id="v1-fact"></p>
+          </div>
         </div>
       </div>
     </div>
-
   </div>
-</main>
+</div>
 
-<footer>Haz clic en el área vacía del diagrama para deseleccionar</footer>
+<!-- ══════════ VIEW 2 ══════════ -->
+<div id="view-2" class="view" style="background:#F5F2EC;padding:1rem 1.25rem 1.5rem">
+  <svg id="svg2" viewBox="0 0 620 505" xmlns="http://www.w3.org/2000/svg" class="svg-full"></svg>
+</div>
+
+<!-- Overlay card for view 2 (fixed, outside view div) -->
+<div id="v2-overlay">
+  <div id="v2-card">
+    <div class="ov-inner">
+      <button class="ov-close" id="v2-close">×</button>
+      <span class="part-badge" id="v2-badge"></span>
+      <p class="ov-name" id="v2-name"></p>
+      <p class="ov-en" id="v2-en"></p>
+      <div class="ov-grid">
+        <div><p class="flbl">Función</p><p class="fval" id="v2-fn"></p></div>
+        <div><p class="flbl">Material</p><p class="fval" id="v2-mat"></p></div>
+      </div>
+      <div class="ov-fact">
+        <p class="flbl">Dato curioso</p>
+        <p class="fval" id="v2-fact"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ VIEW 3 ══════════ -->
+<div id="view-3" class="view">
+  <div class="light-svg-area">
+    <svg id="svg3" viewBox="0 0 620 505" xmlns="http://www.w3.org/2000/svg"></svg>
+  </div>
+  <div id="v3-drawer">
+    <div class="drawer-handle"></div>
+    <button class="drawer-close" id="v3-close">×</button>
+    <div class="drawer-body">
+      <div class="dr-main">
+        <span class="part-badge" id="v3-badge"></span>
+        <p class="dr-name" id="v3-name"></p>
+        <p class="dr-en" id="v3-en"></p>
+      </div>
+      <div class="dr-cols">
+        <div class="dr-field">
+          <p class="dr-lbl">Función</p>
+          <p class="dr-val" id="v3-fn"></p>
+        </div>
+        <div class="dr-field">
+          <p class="dr-lbl">Material</p>
+          <p class="dr-val" id="v3-mat"></p>
+        </div>
+        <div class="dr-fact">
+          <p class="dr-lbl">Dato curioso</p>
+          <p class="dr-val" id="v3-fact"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
+/* ── DATA ── */
 const PARTS = {
-  cuadro: {
-    name: 'Cuadro', en: 'Frame', num: '01',
-    c: '#185FA5', bg: '#E6F1FB', tc: '#0C447C',
-    fn: 'Estructura central que une todos los componentes. Transmite fuerzas entre el ciclista, las ruedas y el terreno.',
-    mat: 'Acero, aluminio, fibra de carbono o titanio',
-    fact: 'El diseño de cuadro diamante lleva más de 130 años casi sin cambios — una de las estructuras más eficientes jamás creadas.'
-  },
-  horquilla: {
-    name: 'Horquilla', en: 'Front Fork', num: '02',
-    c: '#5F5E5A', bg: '#F1EFE8', tc: '#2C2C2A',
-    fn: 'Sostiene la rueda delantera y permite la dirección. Puede incluir suspensión para absorber impactos del terreno.',
-    mat: 'Acero cromado, aluminio o fibra de carbono',
-    fact: 'Las horquillas de suspensión para montaña pueden tener hasta 200mm de recorrido para absorber impactos extremos.'
-  },
-  'rueda-del': {
-    name: 'Rueda delantera', en: 'Front Wheel', num: '03',
-    c: '#5F5E5A', bg: '#F1EFE8', tc: '#2C2C2A',
-    fn: 'Proporciona tracción y dirección. Convierte el movimiento rotatorio en desplazamiento hacia adelante.',
-    mat: 'Llanta de aluminio o carbono, rayos de acero inox, neumático de caucho',
-    fact: 'Una rueda correctamente tensada puede soportar más de 100 veces su propio peso sin deformarse.'
-  },
-  'rueda-tra': {
-    name: 'Rueda trasera', en: 'Rear Wheel', num: '04',
-    c: '#5F5E5A', bg: '#F1EFE8', tc: '#2C2C2A',
-    fn: 'Recibe la fuerza de la cadena y propulsa la bicicleta. Soporta la mayor parte del peso del ciclista.',
-    mat: 'Llanta de aluminio o carbono, rayos de acero inox, neumático de caucho',
-    fact: 'La rueda trasera soporta ~60% del peso total, por eso sus rayos suelen ser más cortos y más tensos que los delanteros.'
-  },
-  manubrio: {
-    name: 'Manubrio', en: 'Handlebars', num: '05',
-    c: '#0F6E56', bg: '#E1F5EE', tc: '#085041',
-    fn: 'Permite controlar la dirección y sirve de apoyo para las manos. Su forma varía según la disciplina ciclista.',
-    mat: 'Aluminio 6061 o fibra de carbono',
-    fact: 'Los manubrios de triatlón (tipo cuerno) pueden reducir la resistencia aerodinámica hasta un 30%.'
-  },
-  potencia: {
-    name: 'Potencia', en: 'Stem', num: '06',
-    c: '#888780', bg: '#F1EFE8', tc: '#2C2C2A',
-    fn: 'Conecta el manubrio al tubo de dirección del cuadro. Su longitud y ángulo definen la postura de conducción.',
-    mat: 'Aluminio forjado o fibra de carbono',
-    fact: 'Cambiar la potencia por una versión 1cm más corta puede transformar completamente la sensación al conducir.'
-  },
-  sillin: {
-    name: 'Sillín', en: 'Saddle', num: '07',
-    c: '#0F6E56', bg: '#E1F5EE', tc: '#085041',
-    fn: 'Soporte para sentarse. Diseñado para distribuir el peso y evitar presión excesiva en zonas sensibles.',
-    mat: 'Cubierta de cuero sintético, núcleo plástico, raíles de titanio o acero',
-    fact: 'El sillín incorrecto es la causa #1 de molestias en ciclismo. Encontrar el correcto puede requerir varias pruebas.'
-  },
-  tija: {
-    name: 'Tija de sillín', en: 'Seat Post', num: '08',
-    c: '#888780', bg: '#F1EFE8', tc: '#2C2C2A',
-    fn: 'Tubo que conecta el sillín al cuadro y permite regular la altura del asiento.',
-    mat: 'Aluminio, fibra de carbono o acero',
-    fact: 'La altura correcta del sillín mejora la eficiencia del pedaleo hasta un 10% y previene lesiones de rodilla.'
-  },
-  bielas: {
-    name: 'Bielas', en: 'Cranks', num: '09',
-    c: '#BA7517', bg: '#FAEEDA', tc: '#633806',
-    fn: 'Brazos que convierten la fuerza lineal de las piernas en rotación para mover la cadena y propulsar la bici.',
-    mat: 'Aluminio forjado, fibra de carbono o acero',
-    fact: 'Solo 2.5mm de diferencia en la longitud de biela cambia notablemente la biomecánica del pedaleo.'
-  },
-  plato: {
-    name: 'Plato', en: 'Chainring', num: '10',
-    c: '#854F0B', bg: '#FAEEDA', tc: '#412402',
-    fn: 'Rueda dentada unida a las bielas que mueve la cadena hacia el cassette trasero para propulsar la bici.',
-    mat: 'Aluminio, acero o carbono con insertos metálicos en los dientes',
-    fact: 'Los platos ovalados reducen el punto muerto del pedaleo, mejorando la eficiencia muscular hasta en un 5%.'
-  },
-  pedales: {
-    name: 'Pedales', en: 'Pedals', num: '11',
-    c: '#BA7517', bg: '#FAEEDA', tc: '#633806',
-    fn: 'Punto de contacto del pie con la bicicleta. Transmiten la fuerza de las piernas hacia las bielas.',
-    mat: 'Plástico reforzado o aluminio, con pines de acero para mayor agarre',
-    fact: 'Los pedales automáticos permiten aplicar fuerza en 360° del pedaleo, mejorando la eficiencia hasta un 20%.'
-  },
-  cadena: {
-    name: 'Cadena', en: 'Chain', num: '12',
-    c: '#5F5E5A', bg: '#F1EFE8', tc: '#2C2C2A',
-    fn: 'Transmite la potencia del plato al cassette para impulsar la rueda trasera y mover la bicicleta.',
-    mat: 'Acero al carbono con placas y pines, a veces recubiertos de níquel o teflón',
-    fact: 'Una cadena de bicicleta tiene eficiencia mecánica >98% — una de las más altas en cualquier mecanismo conocido.'
-  },
-  cassette: {
-    name: 'Cassette', en: 'Cassette', num: '13',
-    c: '#854F0B', bg: '#FAEEDA', tc: '#412402',
-    fn: 'Conjunto de piñones en la rueda trasera que permite seleccionar distintas relaciones de marcha.',
-    mat: 'Acero aleado; piñones pequeños a veces en titanio para reducir el peso total',
-    fact: 'Un cassette de 12 velocidades moderno va de 10 a 52 dientes — antes ese rango requería dos platos.'
-  },
-  desviador: {
-    name: 'Desviador trasero', en: 'Rear Derailleur', num: '14',
-    c: '#993C1D', bg: '#FAECE7', tc: '#4A1B0C',
-    fn: 'Guía la cadena entre los piñones del cassette para cambiar de marcha al accionar el shifter.',
-    mat: 'Aluminio, titanio y polímero de alta resistencia; resorte de acero',
-    fact: 'Los desviadores electrónicos (Shimano Di2, SRAM AXS) cambian de marcha en menos de 60ms.'
-  },
-  frenos: {
-    name: 'Sistema de frenos', en: 'Brakes', num: '15',
-    c: '#A32D2D', bg: '#FCEBEB', tc: '#501313',
-    fn: 'Desaceleran y detienen la bicicleta aplicando fricción sobre la llanta o un disco metálico central.',
-    mat: 'Pinza de aluminio, pastillas de goma o carbono, cable de acero o línea hidráulica',
-    fact: 'Los frenos de disco hidráulicos generan el doble de potencia de frenado bajo lluvia vs. los de llanta.'
-  },
+  cuadro:     { name:'Cuadro',           en:'Frame',            num:'01', c:'#185FA5', bg:'#E6F1FB', tc:'#0C447C', fn:'Estructura central que une todos los componentes. Transmite fuerzas entre el ciclista, las ruedas y el terreno.', mat:'Acero, aluminio, fibra de carbono o titanio', fact:'El diseño de cuadro diamante lleva más de 130 años casi sin cambios — una de las estructuras más eficientes jamás creadas.' },
+  horquilla:  { name:'Horquilla',        en:'Front Fork',       num:'02', c:'#5F5E5A', bg:'#F1EFE8', tc:'#2C2C2A', fn:'Sostiene la rueda delantera y permite la dirección. Puede incluir suspensión para absorber impactos.', mat:'Acero cromado, aluminio o fibra de carbono', fact:'Las horquillas de suspensión para montaña pueden tener hasta 200mm de recorrido para absorber impactos extremos.' },
+  'rueda-del':{ name:'Rueda delantera',  en:'Front Wheel',      num:'03', c:'#5F5E5A', bg:'#F1EFE8', tc:'#2C2C2A', fn:'Proporciona tracción y dirección. Convierte el movimiento rotatorio en desplazamiento hacia adelante.', mat:'Llanta de aluminio o carbono, rayos de acero inox, neumático de caucho', fact:'Una rueda bien tensada puede soportar más de 100 veces su propio peso sin deformarse.' },
+  'rueda-tra':{ name:'Rueda trasera',    en:'Rear Wheel',       num:'04', c:'#5F5E5A', bg:'#F1EFE8', tc:'#2C2C2A', fn:'Recibe la fuerza de la cadena y propulsa la bicicleta. Soporta la mayor parte del peso del ciclista.', mat:'Llanta de aluminio o carbono, rayos de acero inox, neumático de caucho', fact:'La rueda trasera soporta ~60% del peso total, por eso sus rayos son más cortos y tensos.' },
+  manubrio:   { name:'Manubrio',         en:'Handlebars',       num:'05', c:'#0F6E56', bg:'#E1F5EE', tc:'#085041', fn:'Permite controlar la dirección y sirve de apoyo para las manos. Su forma varía según la disciplina.', mat:'Aluminio 6061 o fibra de carbono', fact:'Los manubrios de triatlón (tipo cuerno) pueden reducir la resistencia aerodinámica hasta un 30%.' },
+  potencia:   { name:'Potencia',         en:'Stem',             num:'06', c:'#888780', bg:'#F1EFE8', tc:'#2C2C2A', fn:'Conecta el manubrio al tubo de dirección. Su longitud y ángulo definen la postura de conducción.', mat:'Aluminio forjado o fibra de carbono', fact:'Cambiar la potencia por una 1cm más corta puede transformar completamente la sensación al conducir.' },
+  sillin:     { name:'Sillín',           en:'Saddle',           num:'07', c:'#0F6E56', bg:'#E1F5EE', tc:'#085041', fn:'Soporte para sentarse. Distribuye el peso y evita presión excesiva en zonas sensibles.', mat:'Cubierta de cuero sintético, núcleo plástico, raíles de titanio o acero', fact:'El sillín incorrecto es la causa #1 de molestias en ciclismo. El correcto puede requerir varias pruebas.' },
+  tija:       { name:'Tija de sillín',   en:'Seat Post',        num:'08', c:'#888780', bg:'#F1EFE8', tc:'#2C2C2A', fn:'Tubo que conecta el sillín al cuadro y permite regular la altura del asiento.', mat:'Aluminio, fibra de carbono o acero', fact:'La altura correcta del sillín mejora la eficiencia del pedaleo hasta un 10% y previene lesiones de rodilla.' },
+  bielas:     { name:'Bielas',           en:'Cranks',           num:'09', c:'#BA7517', bg:'#FAEEDA', tc:'#633806', fn:'Brazos que convierten la fuerza de las piernas en rotación para mover la cadena.', mat:'Aluminio forjado, fibra de carbono o acero', fact:'Solo 2.5mm de diferencia en la longitud cambia notablemente la biomecánica del pedaleo.' },
+  plato:      { name:'Plato',            en:'Chainring',        num:'10', c:'#854F0B', bg:'#FAEEDA', tc:'#412402', fn:'Rueda dentada unida a las bielas que mueve la cadena hacia el cassette trasero.', mat:'Aluminio, acero o carbono con insertos metálicos', fact:'Los platos ovalados reducen el punto muerto del pedaleo, mejorando la eficiencia muscular hasta un 5%.' },
+  pedales:    { name:'Pedales',          en:'Pedals',           num:'11', c:'#BA7517', bg:'#FAEEDA', tc:'#633806', fn:'Punto de contacto del pie. Transmiten la fuerza de las piernas hacia las bielas.', mat:'Plástico reforzado o aluminio con pines de acero', fact:'Los pedales automáticos permiten aplicar fuerza en 360° del pedaleo, mejorando la eficiencia hasta un 20%.' },
+  cadena:     { name:'Cadena',           en:'Chain',            num:'12', c:'#5F5E5A', bg:'#F1EFE8', tc:'#2C2C2A', fn:'Transmite la potencia del plato al cassette para impulsar la rueda trasera.', mat:'Acero al carbono con placas y pines, a veces recubiertos de níquel o teflón', fact:'Una cadena de bicicleta tiene eficiencia mecánica >98% — una de las más altas en cualquier mecanismo.' },
+  cassette:   { name:'Cassette',         en:'Cassette',         num:'13', c:'#854F0B', bg:'#FAEEDA', tc:'#412402', fn:'Conjunto de piñones en la rueda trasera que permite seleccionar distintas relaciones de marcha.', mat:'Acero aleado; piñones pequeños a veces en titanio', fact:'Un cassette de 12 velocidades va de 10 a 52 dientes — antes ese rango requería dos platos.' },
+  desviador:  { name:'Desviador trasero',en:'Rear Derailleur',  num:'14', c:'#993C1D', bg:'#FAECE7', tc:'#4A1B0C', fn:'Guía la cadena entre los piñones del cassette para cambiar de marcha.', mat:'Aluminio, titanio y polímero de alta resistencia; resorte de acero', fact:'Los desviadores electrónicos (Shimano Di2, SRAM AXS) cambian de marcha en menos de 60ms.' },
+  frenos:     { name:'Sistema de frenos',en:'Brakes',           num:'15', c:'#A32D2D', bg:'#FCEBEB', tc:'#501313', fn:'Desaceleran y detienen la bicicleta aplicando fricción sobre la llanta o un disco metálico.', mat:'Pinza de aluminio, pastillas de goma o carbono, cable de acero o línea hidráulica', fact:'Los frenos de disco hidráulicos generan el doble de potencia de frenado bajo lluvia vs. los de llanta.' },
 };
 
-const svg = document.getElementById('bsvg');
+/* ── SVG HELPERS ── */
 const NS = 'http://www.w3.org/2000/svg';
-
-function el(tag, attrs = {}) {
+function el(tag, a = {}) {
   const e = document.createElementNS(NS, tag);
-  for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+  for (const [k, v] of Object.entries(a)) e.setAttribute(k, v);
   return e;
 }
-
 function lbl(x, y, text, fill, size = 9, anchor = 'middle') {
   const t = el('text', { x, y, 'text-anchor': anchor, 'font-size': size, fill, 'pointer-events': 'none', 'font-family': 'DM Sans, sans-serif' });
   t.textContent = text;
   return t;
 }
 
-function part(id) {
-  const g = el('g', { class: 'part', 'data-id': id });
-  return g;
+/* ── BUILD BIKE SVG ── */
+function buildBike(svgEl, onPartClick, darkMode = false) {
+  while (svgEl.firstChild) svgEl.removeChild(svgEl.firstChild);
+  const lf = id => darkMode ? 'rgba(255,255,255,0.5)' : PARTS[id].tc;
+
+  function part(id) {
+    const g = el('g', { class: 'part', 'data-id': id });
+    g.addEventListener('click', e => { e.stopPropagation(); onPartClick(id); });
+    g.addEventListener('touchstart', e => { e.preventDefault(); onPartClick(id); }, { passive: false });
+    return g;
+  }
+
+  // FRAME
+  (function () {
+    const g = part('cuadro');
+    g.append(el('polygon', { points: '222,152 368,170 350,310 222,207', fill: PARTS.cuadro.bg, stroke: 'none', opacity: .5 }));
+    g.append(el('polygon', { points: '368,170 432,293 350,310', fill: PARTS.cuadro.bg, stroke: 'none', opacity: .32 }));
+    [['M 222,152 L 222,207', 4], ['M 222,155 L 367,172', 4], ['M 222,205 L 350,310', 4],
+     ['M 367,172 L 350,310', 4], ['M 350,310 L 432,293', 3.5], ['M 367,172 L 432,293', 3.5]
+    ].forEach(([d, w]) => g.append(el('path', { d, fill: 'none', stroke: PARTS.cuadro.c, 'stroke-width': w, 'stroke-linecap': 'round' })));
+    g.append(el('rect', { x: 214, y: 147, width: 14, height: 63, rx: 4, fill: PARTS.cuadro.c }));
+    g.append(el('circle', { cx: 350, cy: 310, r: 9, fill: PARTS.cuadro.c }));
+    g.append(lbl(292, 232, 'Cuadro', lf('cuadro'), 10));
+    svgEl.append(g);
+  })();
+
+  // FORK
+  (function () {
+    const g = part('horquilla');
+    g.append(el('rect', { x: 139, y: 202, width: 36, height: 11, rx: 3, fill: PARTS.horquilla.c }));
+    g.append(el('line', { x1: 157, y1: 155, x2: 157, y2: 203, stroke: PARTS.horquilla.c, 'stroke-width': 4.5, 'stroke-linecap': 'round' }));
+    g.append(el('path', { d: 'M 148,213 Q 118,268 112,332', fill: 'none', stroke: PARTS.horquilla.c, 'stroke-width': 3.5, 'stroke-linecap': 'round' }));
+    g.append(el('path', { d: 'M 166,213 Q 180,268 172,332', fill: 'none', stroke: PARTS.horquilla.c, 'stroke-width': 3.5, 'stroke-linecap': 'round' }));
+    g.append(el('line', { x1: 107, y1: 332, x2: 177, y2: 332, stroke: PARTS.horquilla.c, 'stroke-width': 3, 'stroke-linecap': 'round' }));
+    g.append(el('rect', { x: 96, y: 147, width: 88, height: 192, rx: 4, fill: 'transparent', 'pointer-events': 'all' }));
+    g.append(lbl(142, 352, 'Horquilla', lf('horquilla')));
+    svgEl.append(g);
+  })();
+
+  // WHEELS
+  function mkWheel(cx, cy, r, id) {
+    const g = part(id);
+    g.append(el('circle', { cx, cy, r: r - 5, fill: PARTS[id].bg, opacity: .48 }));
+    g.append(el('circle', { cx, cy, r, fill: 'none', stroke: PARTS[id].c, 'stroke-width': 8 }));
+    g.append(el('circle', { cx, cy, r: r - 12, fill: 'none', stroke: PARTS[id].c, 'stroke-width': 1.5, opacity: .58 }));
+    g.append(el('circle', { cx, cy, r: 7, fill: PARTS[id].c }));
+    for (let i = 0; i < 12; i++) {
+      const a = i * 30 * Math.PI / 180;
+      g.append(el('line', { x1: cx + Math.cos(a) * 8, y1: cy + Math.sin(a) * 8, x2: cx + Math.cos(a) * (r - 13), y2: cy + Math.sin(a) * (r - 13), stroke: PARTS[id].c, 'stroke-width': 1.2, opacity: .4 }));
+    }
+    g.append(lbl(cx, cy + r + 14, PARTS[id].name, lf(id)));
+    return g;
+  }
+  svgEl.append(mkWheel(90, 388, 68, 'rueda-del'));
+  svgEl.append(mkWheel(528, 388, 68, 'rueda-tra'));
+
+  // HANDLEBARS
+  (function () {
+    const g = part('manubrio');
+    g.append(el('rect', { x: 45, y: 62, width: 148, height: 58, rx: 4, fill: PARTS.manubrio.bg, opacity: .01, 'pointer-events': 'all' }));
+    g.append(el('line', { x1: 64, y1: 80, x2: 178, y2: 80, stroke: PARTS.manubrio.c, 'stroke-width': 5, 'stroke-linecap': 'round' }));
+    g.append(el('path', { d: 'M 70,80 Q 57,80 57,94 L 57,114', fill: 'none', stroke: PARTS.manubrio.c, 'stroke-width': 4, 'stroke-linecap': 'round' }));
+    g.append(el('path', { d: 'M 172,80 Q 185,80 185,94 L 185,114', fill: 'none', stroke: PARTS.manubrio.c, 'stroke-width': 4, 'stroke-linecap': 'round' }));
+    g.append(lbl(120, 128, 'Manubrio', lf('manubrio')));
+    svgEl.append(g);
+  })();
+
+  // STEM
+  (function () {
+    const g = part('potencia');
+    g.append(el('rect', { x: 177, y: 110, width: 50, height: 27, rx: 4, fill: PARTS.potencia.bg, stroke: PARTS.potencia.c, 'stroke-width': 1.5 }));
+    g.append(lbl(202, 123, 'Potencia', lf('potencia')));
+    svgEl.append(g);
+  })();
+
+  // SADDLE
+  (function () {
+    const g = part('sillin');
+    g.append(el('ellipse', { cx: 442, cy: 68, rx: 64, ry: 22, fill: PARTS.sillin.bg, stroke: PARTS.sillin.c, 'stroke-width': 1.5 }));
+    g.append(el('line', { x1: 394, y1: 74, x2: 490, y2: 74, stroke: PARTS.sillin.c, 'stroke-width': 1.5, opacity: .38 }));
+    g.append(lbl(442, 68, 'Sillín', lf('sillin')));
+    svgEl.append(g);
+  })();
+
+  // SEAT POST
+  (function () {
+    const g = part('tija');
+    g.append(el('rect', { x: 433, y: 95, width: 18, height: 65, rx: 4, fill: PARTS.tija.bg, stroke: PARTS.tija.c, 'stroke-width': 1.5 }));
+    g.append(lbl(442, 173, 'Tija de sillín', lf('tija'), 8));
+    svgEl.append(g);
+  })();
+
+  // CHAINRING
+  (function () {
+    const g = part('plato');
+    g.append(el('circle', { cx: 252, cy: 382, r: 40, fill: PARTS.plato.bg, stroke: PARTS.plato.c, 'stroke-width': 2 }));
+    g.append(el('circle', { cx: 252, cy: 382, r: 27, fill: 'none', stroke: PARTS.plato.c, 'stroke-width': 1, opacity: .5 }));
+    g.append(el('circle', { cx: 252, cy: 382, r: 6, fill: PARTS.plato.c }));
+    for (let i = 0; i < 18; i++) { const a = i * 20 * Math.PI / 180; g.append(el('circle', { cx: 252 + Math.cos(a) * 40, cy: 382 + Math.sin(a) * 40, r: 2.5, fill: PARTS.plato.c })); }
+    g.append(lbl(252, 434, 'Plato', lf('plato')));
+    svgEl.append(g);
+  })();
+
+  // CRANKS
+  (function () {
+    const cx = 252, cy = 382;
+    const g = part('bielas');
+    g.append(el('line', { x1: cx, y1: cy, x2: cx - 47, y2: cy + 28, stroke: PARTS.bielas.c, 'stroke-width': 7, 'stroke-linecap': 'round' }));
+    g.append(el('line', { x1: cx, y1: cy, x2: cx + 47, y2: cy - 28, stroke: PARTS.bielas.c, 'stroke-width': 7, 'stroke-linecap': 'round' }));
+    g.append(el('rect', { x: cx - 62, y: cy - 44, width: 124, height: 88, rx: 4, fill: 'transparent', 'pointer-events': 'all' }));
+    g.append(lbl(cx + 65, cy - 38, 'Bielas', lf('bielas'), 9, 'start'));
+    svgEl.append(g);
+  })();
+
+  // PEDALS
+  (function () {
+    const g = part('pedales');
+    g.append(el('rect', { x: 158, y: 420, width: 70, height: 19, rx: 3, fill: PARTS.pedales.bg, stroke: PARTS.pedales.c, 'stroke-width': 1.5 }));
+    g.append(el('rect', { x: 276, y: 341, width: 70, height: 19, rx: 3, fill: PARTS.pedales.bg, stroke: PARTS.pedales.c, 'stroke-width': 1.5 }));
+    g.append(lbl(193, 450, 'Pedales', lf('pedales')));
+    svgEl.append(g);
+  })();
+
+  // CHAIN
+  (function () {
+    const g = part('cadena');
+    const d = 'M 290,378 C 340,370 395,364 458,358';
+    g.append(el('path', { d, fill: 'none', stroke: PARTS.cadena.c, 'stroke-width': 6, 'stroke-dasharray': '6,3', 'stroke-linecap': 'round' }));
+    g.append(el('path', { d, fill: 'none', stroke: 'transparent', 'stroke-width': 15, 'pointer-events': 'all' }));
+    g.append(lbl(378, 350, 'Cadena', lf('cadena')));
+    svgEl.append(g);
+  })();
+
+  // CASSETTE
+  (function () {
+    const g = part('cassette');
+    [38, 30, 22, 15].forEach((r, i) => g.append(el('circle', { cx: 467, cy: 348, r, fill: i === 0 ? PARTS.cassette.bg : 'none', stroke: PARTS.cassette.c, 'stroke-width': i === 0 ? 1.5 : 1, opacity: i === 0 ? 1 : .6 })));
+    g.append(el('circle', { cx: 467, cy: 348, r: 5, fill: PARTS.cassette.c }));
+    g.append(lbl(467, 394, 'Cassette', lf('cassette')));
+    svgEl.append(g);
+  })();
+
+  // REAR DERAILLEUR
+  (function () {
+    const g = part('desviador');
+    g.append(el('rect', { x: 498, y: 285, width: 76, height: 50, rx: 6, fill: PARTS.desviador.bg, stroke: PARTS.desviador.c, 'stroke-width': 1.5 }));
+    g.append(el('circle', { cx: 513, cy: 305, r: 9, fill: 'none', stroke: PARTS.desviador.c, 'stroke-width': 1.5 }));
+    g.append(el('circle', { cx: 559, cy: 320, r: 9, fill: 'none', stroke: PARTS.desviador.c, 'stroke-width': 1.5 }));
+    g.append(el('line', { x1: 513, y1: 305, x2: 559, y2: 320, stroke: PARTS.desviador.c, 'stroke-width': 1.5 }));
+    g.append(lbl(536, 348, 'Desviador trasero', lf('desviador'), 8));
+    svgEl.append(g);
+  })();
+
+  // BRAKES
+  (function () {
+    const g = part('frenos');
+    g.append(el('path', { d: 'M 52,448 L 52,462 Q 52,473 64,473 L 103,473 Q 115,473 115,462 L 115,448', fill: PARTS.frenos.bg, stroke: PARTS.frenos.c, 'stroke-width': 1.5, 'stroke-linecap': 'round' }));
+    g.append(el('path', { d: 'M 478,448 L 478,462 Q 478,473 490,473 L 527,473 Q 539,473 539,462 L 539,448', fill: PARTS.frenos.bg, stroke: PARTS.frenos.c, 'stroke-width': 1.5, 'stroke-linecap': 'round' }));
+    g.append(lbl(83, 487, 'Freno delantero', lf('frenos'), 8));
+    g.append(lbl(508, 487, 'Freno trasero', lf('frenos'), 8));
+    svgEl.append(g);
+  })();
+
+  // Click on empty area
+  svgEl.addEventListener('click', e => { if (!e.target.closest('.part')) onPartClick(null); });
 }
 
-// ── CUADRO (Frame) ──
-(function () {
-  const g = part('cuadro');
-  g.append(el('polygon', { points: '222,152 368,170 350,310 222,207', fill: PARTS.cuadro.bg, stroke: 'none', opacity: .55 }));
-  g.append(el('polygon', { points: '368,170 432,293 350,310', fill: PARTS.cuadro.bg, stroke: 'none', opacity: .35 }));
-  [['M 222,152 L 222,207', 4], ['M 222,155 L 367,172', 4], ['M 222,205 L 350,310', 4],
-   ['M 367,172 L 350,310', 4], ['M 350,310 L 432,293', 3.5], ['M 367,172 L 432,293', 3.5]
-  ].forEach(([d, w]) => g.append(el('path', { d, fill: 'none', stroke: PARTS.cuadro.c, 'stroke-width': w, 'stroke-linecap': 'round' })));
-  g.append(el('rect', { x: 214, y: 147, width: 14, height: 63, rx: 4, fill: PARTS.cuadro.c }));
-  g.append(el('circle', { cx: 350, cy: 310, r: 9, fill: PARTS.cuadro.c }));
-  g.append(lbl(292, 232, 'Cuadro', PARTS.cuadro.tc, 10));
-  svg.append(g);
-})();
-
-// ── HORQUILLA (Fork) ──
-(function () {
-  const g = part('horquilla');
-  g.append(el('rect', { x: 139, y: 202, width: 36, height: 11, rx: 3, fill: PARTS.horquilla.c }));
-  g.append(el('line', { x1: 157, y1: 155, x2: 157, y2: 203, stroke: PARTS.horquilla.c, 'stroke-width': 4.5, 'stroke-linecap': 'round' }));
-  g.append(el('path', { d: 'M 148,213 Q 118,268 112,332', fill: 'none', stroke: PARTS.horquilla.c, 'stroke-width': 3.5, 'stroke-linecap': 'round' }));
-  g.append(el('path', { d: 'M 166,213 Q 180,268 172,332', fill: 'none', stroke: PARTS.horquilla.c, 'stroke-width': 3.5, 'stroke-linecap': 'round' }));
-  g.append(el('line', { x1: 107, y1: 332, x2: 177, y2: 332, stroke: PARTS.horquilla.c, 'stroke-width': 3, 'stroke-linecap': 'round' }));
-  g.append(el('rect', { x: 96, y: 147, width: 88, height: 192, rx: 4, fill: 'transparent', 'pointer-events': 'all' }));
-  g.append(lbl(142, 352, 'Horquilla', PARTS.horquilla.tc));
-  svg.append(g);
-})();
-
-// ── WHEELS ──
-function makeWheel(cx, cy, r, id) {
-  const g = part(id);
-  g.append(el('circle', { cx, cy, r: r - 5, fill: PARTS[id].bg, opacity: .5 }));
-  g.append(el('circle', { cx, cy, r, fill: 'none', stroke: PARTS[id].c, 'stroke-width': 8 }));
-  g.append(el('circle', { cx, cy, r: r - 12, fill: 'none', stroke: PARTS[id].c, 'stroke-width': 1.5, opacity: .6 }));
-  g.append(el('circle', { cx, cy, r: 7, fill: PARTS[id].c }));
-  for (let i = 0; i < 12; i++) {
-    const a = i * 30 * Math.PI / 180;
-    g.append(el('line', { x1: cx + Math.cos(a) * 8, y1: cy + Math.sin(a) * 8, x2: cx + Math.cos(a) * (r - 13), y2: cy + Math.sin(a) * (r - 13), stroke: PARTS[id].c, 'stroke-width': 1.2, opacity: .42 }));
-  }
-  g.append(lbl(cx, cy + r + 14, PARTS[id].name, PARTS[id].tc));
-  return g;
-}
-svg.append(makeWheel(90, 388, 68, 'rueda-del'));
-svg.append(makeWheel(528, 388, 68, 'rueda-tra'));
-
-// ── MANUBRIO (Handlebars) ──
-(function () {
-  const g = part('manubrio');
-  g.append(el('rect', { x: 45, y: 62, width: 148, height: 58, rx: 4, fill: PARTS.manubrio.bg, opacity: .01, 'pointer-events': 'all' }));
-  g.append(el('line', { x1: 64, y1: 80, x2: 178, y2: 80, stroke: PARTS.manubrio.c, 'stroke-width': 5, 'stroke-linecap': 'round' }));
-  g.append(el('path', { d: 'M 70,80 Q 57,80 57,94 L 57,114', fill: 'none', stroke: PARTS.manubrio.c, 'stroke-width': 4, 'stroke-linecap': 'round' }));
-  g.append(el('path', { d: 'M 172,80 Q 185,80 185,94 L 185,114', fill: 'none', stroke: PARTS.manubrio.c, 'stroke-width': 4, 'stroke-linecap': 'round' }));
-  g.append(lbl(120, 128, 'Manubrio', PARTS.manubrio.tc));
-  svg.append(g);
-})();
-
-// ── POTENCIA (Stem) ──
-(function () {
-  const g = part('potencia');
-  g.append(el('rect', { x: 177, y: 110, width: 50, height: 27, rx: 4, fill: PARTS.potencia.bg, stroke: PARTS.potencia.c, 'stroke-width': 1.5 }));
-  g.append(lbl(202, 123, 'Potencia', PARTS.potencia.tc));
-  svg.append(g);
-})();
-
-// ── SILLÍN (Saddle) ──
-(function () {
-  const g = part('sillin');
-  g.append(el('ellipse', { cx: 442, cy: 68, rx: 64, ry: 22, fill: PARTS.sillin.bg, stroke: PARTS.sillin.c, 'stroke-width': 1.5 }));
-  g.append(el('line', { x1: 394, y1: 74, x2: 490, y2: 74, stroke: PARTS.sillin.c, 'stroke-width': 1.5, opacity: .4 }));
-  g.append(lbl(442, 68, 'Sillín', PARTS.sillin.tc));
-  svg.append(g);
-})();
-
-// ── TIJA (Seat Post) ──
-(function () {
-  const g = part('tija');
-  g.append(el('rect', { x: 433, y: 95, width: 18, height: 65, rx: 4, fill: PARTS.tija.bg, stroke: PARTS.tija.c, 'stroke-width': 1.5 }));
-  g.append(lbl(442, 173, 'Tija de sillín', PARTS.tija.tc, 8));
-  svg.append(g);
-})();
-
-// ── PLATO (Chainring) ──
-(function () {
-  const g = part('plato');
-  g.append(el('circle', { cx: 252, cy: 382, r: 40, fill: PARTS.plato.bg, stroke: PARTS.plato.c, 'stroke-width': 2 }));
-  g.append(el('circle', { cx: 252, cy: 382, r: 27, fill: 'none', stroke: PARTS.plato.c, 'stroke-width': 1, opacity: .5 }));
-  g.append(el('circle', { cx: 252, cy: 382, r: 6, fill: PARTS.plato.c }));
-  for (let i = 0; i < 18; i++) {
-    const a = i * 20 * Math.PI / 180;
-    g.append(el('circle', { cx: 252 + Math.cos(a) * 40, cy: 382 + Math.sin(a) * 40, r: 2.5, fill: PARTS.plato.c }));
-  }
-  g.append(lbl(252, 434, 'Plato', PARTS.plato.tc));
-  svg.append(g);
-})();
-
-// ── BIELAS (Cranks) ──
-(function () {
-  const cx = 252, cy = 382;
-  const g = part('bielas');
-  g.append(el('line', { x1: cx, y1: cy, x2: cx - 47, y2: cy + 28, stroke: PARTS.bielas.c, 'stroke-width': 7, 'stroke-linecap': 'round' }));
-  g.append(el('line', { x1: cx, y1: cy, x2: cx + 47, y2: cy - 28, stroke: PARTS.bielas.c, 'stroke-width': 7, 'stroke-linecap': 'round' }));
-  g.append(el('rect', { x: cx - 62, y: cy - 44, width: 124, height: 88, rx: 4, fill: 'transparent', 'pointer-events': 'all' }));
-  g.append(lbl(cx + 64, cy - 38, 'Bielas', PARTS.bielas.tc, 9, 'start'));
-  svg.append(g);
-})();
-
-// ── PEDALES (Pedals) ──
-(function () {
-  const g = part('pedales');
-  g.append(el('rect', { x: 158, y: 420, width: 70, height: 19, rx: 3, fill: PARTS.pedales.bg, stroke: PARTS.pedales.c, 'stroke-width': 1.5 }));
-  g.append(el('rect', { x: 276, y: 341, width: 70, height: 19, rx: 3, fill: PARTS.pedales.bg, stroke: PARTS.pedales.c, 'stroke-width': 1.5 }));
-  g.append(lbl(193, 450, 'Pedales', PARTS.pedales.tc));
-  svg.append(g);
-})();
-
-// ── CADENA (Chain) ──
-(function () {
-  const g = part('cadena');
-  const d = 'M 290,378 C 340,370 395,364 458,358';
-  g.append(el('path', { d, fill: 'none', stroke: PARTS.cadena.c, 'stroke-width': 6, 'stroke-dasharray': '6,3', 'stroke-linecap': 'round' }));
-  g.append(el('path', { d, fill: 'none', stroke: 'transparent', 'stroke-width': 15, 'pointer-events': 'all' }));
-  g.append(lbl(378, 350, 'Cadena', PARTS.cadena.tc));
-  svg.append(g);
-})();
-
-// ── CASSETTE ──
-(function () {
-  const g = part('cassette');
-  [38, 30, 22, 15].forEach((r, i) =>
-    g.append(el('circle', { cx: 467, cy: 348, r, fill: i === 0 ? PARTS.cassette.bg : 'none', stroke: PARTS.cassette.c, 'stroke-width': i === 0 ? 1.5 : 1, opacity: i === 0 ? 1 : .6 }))
+/* ── HELPERS ── */
+function dim(svgEl, activeId) {
+  svgEl.querySelectorAll('.part').forEach(p =>
+    p.style.opacity = (!activeId || p.getAttribute('data-id') === activeId) ? '1' : '0.2'
   );
-  g.append(el('circle', { cx: 467, cy: 348, r: 5, fill: PARTS.cassette.c }));
-  g.append(lbl(467, 394, 'Cassette', PARTS.cassette.tc));
-  svg.append(g);
-})();
+}
+function setBadge(el, d) {
+  el.textContent = 'Pieza ' + d.num;
+  el.style.cssText = `display:inline-block;font-size:.625rem;letter-spacing:.09em;text-transform:uppercase;padding:3px 9px;border-radius:20px;margin-bottom:8px;font-weight:500;background:${d.bg};color:${d.tc};border:.5px solid ${d.c}`;
+}
 
-// ── DESVIADOR TRASERO (Rear Derailleur) ──
-(function () {
-  const g = part('desviador');
-  g.append(el('rect', { x: 498, y: 285, width: 76, height: 50, rx: 6, fill: PARTS.desviador.bg, stroke: PARTS.desviador.c, 'stroke-width': 1.5 }));
-  g.append(el('circle', { cx: 513, cy: 305, r: 9, fill: 'none', stroke: PARTS.desviador.c, 'stroke-width': 1.5 }));
-  g.append(el('circle', { cx: 559, cy: 320, r: 9, fill: 'none', stroke: PARTS.desviador.c, 'stroke-width': 1.5 }));
-  g.append(el('line', { x1: 513, y1: 305, x2: 559, y2: 320, stroke: PARTS.desviador.c, 'stroke-width': 1.5 }));
-  g.append(lbl(536, 348, 'Desviador trasero', PARTS.desviador.tc, 8));
-  svg.append(g);
-})();
-
-// ── FRENOS (Brakes) ──
-(function () {
-  const g = part('frenos');
-  const brake = (d) => g.append(el('path', { d, fill: PARTS.frenos.bg, stroke: PARTS.frenos.c, 'stroke-width': 1.5, 'stroke-linecap': 'round' }));
-  brake('M 52,448 L 52,462 Q 52,473 64,473 L 103,473 Q 115,473 115,462 L 115,448');
-  brake('M 478,448 L 478,462 Q 478,473 490,473 L 527,473 Q 539,473 539,462 L 539,448');
-  g.append(lbl(83, 487, 'Freno delantero', PARTS.frenos.tc, 8));
-  g.append(lbl(508, 487, 'Freno trasero', PARTS.frenos.tc, 8));
-  svg.append(g);
-})();
-
-// ── INTERACTION ──
-let selected = null;
-
-function selectPart(id) {
+/* ── OPTION 1 LOGIC ── */
+let sel1 = null;
+buildBike(document.getElementById('svg1'), id => {
+  if (!id) { sel1 = null; dim(document.getElementById('svg1'), null); document.getElementById('v1-empty').style.display = ''; document.getElementById('v1-data').style.display = 'none'; return; }
+  if (id === sel1) return;
+  sel1 = id;
   const d = PARTS[id];
-  if (!d) return;
-  selected = id;
-
-  document.querySelectorAll('.part').forEach(p => {
-    p.style.opacity = p.getAttribute('data-id') === id ? '1' : '0.22';
-  });
-
-  document.getElementById('panel-empty').style.display = 'none';
-  const pc = document.getElementById('panel-content');
-  pc.style.display = 'block';
-
-  const badge = document.getElementById('p-badge');
-  badge.textContent = 'Pieza ' + d.num;
-  badge.style.cssText = `font-size:0.625rem;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:20px;display:inline-block;margin-bottom:0.625rem;font-weight:500;background:${d.bg};color:${d.tc};border:0.5px solid ${d.c}`;
-
-  document.getElementById('p-name').textContent = d.name;
-  document.getElementById('p-en').textContent = d.en;
-  document.getElementById('p-fn').textContent = d.fn;
-  document.getElementById('p-mat').textContent = d.mat;
-  document.getElementById('p-fact').textContent = d.fact;
-
-  // Smooth scroll to panel on mobile
-  if (window.innerWidth < 600) {
-    document.querySelector('.panel').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
-}
-
-function deselect() {
-  selected = null;
-  document.querySelectorAll('.part').forEach(p => p.style.opacity = '1');
-  document.getElementById('panel-empty').style.display = '';
-  document.getElementById('panel-content').style.display = 'none';
-}
-
-document.querySelectorAll('.part').forEach(g => {
-  g.addEventListener('click', e => {
-    e.stopPropagation();
-    const id = g.getAttribute('data-id');
-    if (selected === id) { deselect(); return; }
-    selectPart(id);
-  });
-  // Touch support
-  g.addEventListener('touchstart', e => {
-    e.preventDefault();
-    const id = g.getAttribute('data-id');
-    if (selected === id) { deselect(); return; }
-    selectPart(id);
-  }, { passive: false });
+  dim(document.getElementById('svg1'), id);
+  document.getElementById('v1-empty').style.display = 'none';
+  document.getElementById('v1-data').style.display = 'block';
+  setBadge(document.getElementById('v1-badge'), d);
+  document.getElementById('v1-name').textContent = d.name;
+  document.getElementById('v1-en').textContent = d.en;
+  document.getElementById('v1-fn').textContent = d.fn;
+  document.getElementById('v1-mat').textContent = d.mat;
+  document.getElementById('v1-fact').textContent = d.fact;
+  if (window.innerWidth < 600) document.querySelector('.panel-col').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 });
 
-svg.addEventListener('click', e => {
-  if (!e.target.closest('.part')) deselect();
+/* ── OPTION 2 LOGIC ── */
+let svg2Built = false;
+const v2overlay = document.getElementById('v2-overlay');
+const v2card = document.getElementById('v2-card');
+
+function buildOpt2() {
+  if (svg2Built) return;
+  svg2Built = true;
+  buildBike(document.getElementById('svg2'), id => {
+    if (!id) { v2overlay.classList.remove('open'); dim(document.getElementById('svg2'), null); return; }
+    const d = PARTS[id];
+    dim(document.getElementById('svg2'), id);
+    setBadge(document.getElementById('v2-badge'), d);
+    document.getElementById('v2-name').textContent = d.name;
+    document.getElementById('v2-en').textContent = d.en;
+    document.getElementById('v2-fn').textContent = d.fn;
+    document.getElementById('v2-mat').textContent = d.mat;
+    document.getElementById('v2-fact').textContent = d.fact;
+    v2overlay.classList.add('open');
+  });
+}
+
+document.getElementById('v2-close').addEventListener('click', () => {
+  v2overlay.classList.remove('open');
+  dim(document.getElementById('svg2'), null);
+});
+v2overlay.addEventListener('click', e => {
+  if (!e.target.closest('#v2-card')) { v2overlay.classList.remove('open'); dim(document.getElementById('svg2'), null); }
+});
+
+/* ── OPTION 3 LOGIC ── */
+let svg3Built = false;
+const v3drawer = document.getElementById('v3-drawer');
+
+function buildOpt3() {
+  if (svg3Built) return;
+  svg3Built = true;
+  buildBike(document.getElementById('svg3'), id => {
+    if (!id) { v3drawer.classList.remove('open'); dim(document.getElementById('svg3'), null); return; }
+    const d = PARTS[id];
+    dim(document.getElementById('svg3'), id);
+    setBadge(document.getElementById('v3-badge'), d);
+    document.getElementById('v3-name').textContent = d.name;
+    document.getElementById('v3-en').textContent = d.en;
+    document.getElementById('v3-fn').textContent = d.fn;
+    document.getElementById('v3-mat').textContent = d.mat;
+    document.getElementById('v3-fact').textContent = d.fact;
+    v3drawer.classList.add('open');
+  }, false); // light mode labels
+}
+
+document.getElementById('v3-close').addEventListener('click', () => {
+  v3drawer.classList.remove('open');
+  dim(document.getElementById('svg3'), null);
+});
+
+/* ── TAB SWITCHING ── */
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const v = btn.dataset.v;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b === btn));
+    document.querySelectorAll('.view').forEach(view => {
+      const isActive = view.id === `view-${v}`;
+      view.classList.toggle('active', isActive);
+    });
+
+    if (v === '2') buildOpt2();
+    if (v === '3') buildOpt3();
+    else v3drawer.classList.remove('open');
+
+    // Close opt2 overlay when leaving
+    if (v !== '2') { v2overlay.classList.remove('open'); }
+  });
 });
 </script>
 </body>
