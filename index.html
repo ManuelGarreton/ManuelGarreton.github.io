@@ -3,496 +3,851 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Anatomía de la Bicicleta</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<title>Bicicleta Explotada · Bicicletas Vargas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  *, *::before, *::after { box-sizing: border-box; }
+  :root {
+    --bg: #f3f0e8;
+    --surface: rgba(255, 255, 255, 0.88);
+    --surface-strong: #ffffff;
+    --border: rgba(28, 28, 24, 0.1);
+    --shadow: 0 18px 48px rgba(23, 23, 19, 0.09);
+    --text: #181814;
+    --muted: #66675f;
+    --overlay: rgba(235, 230, 219, 0.78);
+  }
 
-:root {
-  --bg: #F4F1EA;
-  --surface: #FFFFFF;
-  --border: rgba(0,0,0,0.09);
-  --text-primary: #1A1A18;
-  --text-secondary: #5A5A56;
-  --text-muted: #9A9A94;
-  --eng-bg: #FFFBF0;
-  --eng-border: #E8D89A;
-  --eng-text: #5A4A10;
-}
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: 'DM Sans', sans-serif;
+    background: radial-gradient(circle at top, #fbfaf7 0%, var(--bg) 58%);
+    color: var(--text);
+  }
 
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--bg);
-  color: var(--text-primary);
-  min-height: 100dvh;
-}
+  .page {
+    width: min(1240px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: 2rem 0 2.5rem;
+  }
 
-/* ── HEADER ── */
-header {
-  padding: 1.125rem 2rem 1rem;
-  background: var(--surface);
-  border-bottom: 0.5px solid var(--border);
-  display: flex;
-  align-items: baseline;
-  gap: 1rem;
-}
-header h1 {
-  font-family: 'DM Serif Display', serif;
-  font-size: clamp(1.5rem, 3.5vw, 2.1rem);
-  font-weight: 400;
-  letter-spacing: -0.02em;
-  color: var(--text-primary);
-}
-.header-hint {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  letter-spacing: 0.05em;
-}
+  .hero {
+    text-align: center;
+    margin-bottom: 1.4rem;
+  }
 
-/* ── SVG AREA ── */
-.svg-wrap { padding: 1rem 1.25rem 1.5rem; }
-#bsvg {
-  width: 100%;
-  border: 0.5px solid var(--border);
-  border-radius: 16px;
-  background: #FAFAF7;
-  display: block;
-  cursor: pointer;
-}
-.part { cursor: pointer; transition: opacity 0.18s ease; }
-.part:hover { opacity: 0.72; }
+  h1 {
+    margin: 0;
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.8rem, 7vw, 5rem);
+    line-height: 0.94;
+    font-weight: 400;
+    letter-spacing: -0.05em;
+  }
 
-/* ── OVERLAY ── */
-#overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(235,231,222,0.55);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  z-index: 300;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-}
-#overlay.open { display: flex; }
+  .pieces-board,
+  #card,
+  #context-card {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: var(--shadow);
+  }
 
-/* ── CARD ── */
-#card {
-  background: var(--surface);
-  border: 0.5px solid var(--border);
-  border-radius: 20px;
-  box-shadow: 0 16px 56px rgba(0,0,0,0.13);
-  width: min(480px, 100%);
-  max-height: 90dvh;
-  overflow-y: auto;
-  position: relative;
-  animation: cardIn 0.24s cubic-bezier(0.22, 1, 0.36, 1);
-  scrollbar-width: none;
-}
-#card::-webkit-scrollbar { display: none; }
+  .pieces-board {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1.58;
+    border-radius: 34px;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at top, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.72)),
+      linear-gradient(180deg, rgba(241, 238, 231, 0.85), rgba(255, 255, 255, 0.7));
+  }
 
-@keyframes cardIn {
-  from { opacity: 0; transform: scale(0.93) translateY(10px); }
-  to   { opacity: 1; transform: scale(1)    translateY(0); }
-}
+  .board-surface {
+    position: absolute;
+    inset: 1.25rem;
+    border-radius: 28px;
+    border: 1px dashed rgba(28, 28, 24, 0.08);
+    pointer-events: none;
+  }
 
-.card-close {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  display: flex;
-  justify-content: flex-end;
-  padding: 0.875rem 0.875rem 0;
-  background: linear-gradient(to bottom, #fff 70%, transparent);
-}
-.close-btn {
-  width: 32px; height: 32px;
-  border-radius: 50%;
-  background: rgba(0,0,0,0.07);
-  border: none; cursor: pointer;
-  font-size: 18px; color: var(--text-secondary);
-  display: flex; align-items: center; justify-content: center;
-  transition: background 0.15s; flex-shrink: 0;
-}
-.close-btn:hover { background: rgba(0,0,0,0.13); }
+  .piece {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    width: var(--w);
+    z-index: var(--z, 1);
+    transform: translate(-50%, -50%);
+    border: none;
+    background: transparent;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.45rem;
+    cursor: pointer;
+    transition: transform 0.18s ease;
+  }
 
-/* image area */
-.card-img-wrap {
-  margin: -0.5rem 1.25rem 0;
-  border-radius: 12px;
-  overflow: hidden;
-  height: 180px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.card-img-wrap img {
-  width: 100%; height: 100%;
-  object-fit: contain;
-  padding: 0.75rem;
-}
-.img-placeholder {
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  gap: 0.5rem; width: 100%; height: 100%;
-  color: var(--text-muted);
-}
-.img-placeholder .ph-icon { font-size: 2.5rem; opacity: 0.35; }
-.img-placeholder .ph-name { font-size: 0.8125rem; font-weight: 500; opacity: 0.7; }
-.img-placeholder .ph-sub { font-size: 0.65rem; letter-spacing: 0.05em; opacity: 0.45; text-transform: uppercase; }
+  .piece:hover {
+    transform: translate(-50%, -50%) scale(1.04);
+  }
 
-/* card header */
-.card-header {
-  padding: 1rem 1.5rem 0.875rem;
-  border-bottom: 0.5px solid var(--border);
-}
-.card-badge {
-  display: inline-block;
-  font-size: 0.6rem; letter-spacing: 0.1em;
-  text-transform: uppercase; padding: 3px 9px;
-  border-radius: 20px; margin-bottom: 0.5rem; font-weight: 500;
-}
-.card-name {
-  font-family: 'DM Serif Display', serif;
-  font-size: 1.9rem; font-weight: 400;
-  letter-spacing: -0.02em; color: var(--text-primary);
-  line-height: 1.1; margin-bottom: 4px;
-}
-.card-materials {
-  font-size: 0.8125rem; color: var(--text-muted); font-style: italic;
-}
+  .piece img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 18px 24px rgba(0, 0, 0, 0.16));
+    user-select: none;
+    -webkit-user-drag: none;
+  }
 
-/* card body */
-.card-body { padding: 1rem 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+  .piece-name {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.32rem 0.62rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.82);
+    border: 1px solid rgba(28, 28, 24, 0.08);
+    font-size: clamp(0.68rem, 0.9vw, 0.82rem);
+    font-weight: 600;
+    line-height: 1.1;
+    color: var(--accent, var(--text));
+    box-shadow: 0 6px 14px rgba(23, 23, 19, 0.06);
+    white-space: nowrap;
+  }
 
-.field-label {
-  font-size: 0.6rem; text-transform: uppercase;
-  letter-spacing: 0.1em; color: var(--text-muted);
-  margin-bottom: 5px; font-weight: 500;
-}
-.field-text {
-  font-size: 0.875rem; color: var(--text-secondary); line-height: 1.65;
-}
+  .footer-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.25rem;
+  }
 
-/* engineering block */
-.eng-block {
-  background: var(--eng-bg);
-  border: 0.5px solid var(--eng-border);
-  border-radius: 10px;
-  padding: 1rem 1.125rem;
-}
-.eng-label {
-  font-size: 0.6rem; text-transform: uppercase;
-  letter-spacing: 0.1em; color: #9A7C20;
-  margin-bottom: 5px; font-weight: 500;
-}
-.eng-text {
-  font-size: 0.875rem; color: var(--eng-text); line-height: 1.65;
-}
+  .context-btn {
+    border: 1px solid rgba(28, 28, 24, 0.12);
+    background: rgba(255, 255, 255, 0.88);
+    color: var(--text);
+    border-radius: 999px;
+    padding: 0.85rem 1.25rem;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 10px 24px rgba(23, 23, 19, 0.08);
+  }
 
-.card-footer { height: 0.5rem; }
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: var(--overlay);
+    z-index: 40;
+  }
 
-footer {
-  text-align: center; padding: 0.875rem;
-  font-size: 0.6875rem; color: var(--text-muted);
-  letter-spacing: 0.04em;
-}
+  .modal-overlay.open { display: flex; }
 
-@media (max-width: 600px) {
-  header { padding: 1rem 1.25rem; }
-  .svg-wrap { padding: 0.75rem; }
-  .card-img-wrap { height: 140px; }
-  .card-name { font-size: 1.6rem; }
-  .card-header, .card-body { padding-left: 1.25rem; padding-right: 1.25rem; }
-}
+  #card,
+  #context-card {
+    width: min(720px, 100%);
+    max-height: min(92vh, 920px);
+    border-radius: 30px;
+    overflow: auto;
+    background: var(--surface-strong);
+  }
+
+  .card-close {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    display: flex;
+    justify-content: flex-end;
+    padding: 1rem 1rem 0;
+    background: linear-gradient(to bottom, #fff 68%, rgba(255, 255, 255, 0));
+  }
+
+  .close-btn {
+    width: 2.4rem;
+    height: 2.4rem;
+    border: none;
+    border-radius: 999px;
+    background: rgba(24, 24, 20, 0.08);
+    color: var(--text);
+    cursor: pointer;
+    font-size: 1.25rem;
+  }
+
+  .card-image {
+    margin: -0.25rem 1.4rem 0;
+    border-radius: 24px;
+    min-height: 290px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 1.25rem;
+  }
+
+  .card-image button {
+    width: 100%;
+    min-height: 260px;
+    border: none;
+    background: transparent;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .card-image button.static { cursor: default; }
+
+  .card-image img {
+    max-width: 100%;
+    max-height: 340px;
+    object-fit: contain;
+    filter: drop-shadow(0 16px 24px rgba(0, 0, 0, 0.14));
+    transform-origin: center center;
+    transition: transform 0.18s ease;
+  }
+
+  .card-copy,
+  .context-copy {
+    padding: 1.35rem 1.55rem 1.6rem;
+  }
+
+  .card-title,
+  .context-title {
+    margin: 0;
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 4vw, 2.7rem);
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    font-weight: 400;
+  }
+
+  .card-materials {
+    margin: 0.45rem 0 0;
+    color: var(--muted);
+    line-height: 1.6;
+    font-size: 0.95rem;
+  }
+
+  .card-sections,
+  .context-sections {
+    display: grid;
+    gap: 0.85rem;
+    margin-top: 1.2rem;
+  }
+
+  .card-section,
+  .context-section {
+    border-radius: 20px;
+    padding: 1rem 1.05rem;
+    background: #f7f4ee;
+    border: 1px solid rgba(24, 24, 20, 0.06);
+  }
+
+  .card-section.engineering { background: #fff7df; }
+  .card-section.context { background: #f1eefc; }
+  .context-section.alt { background: #f1eefc; }
+
+  .section-label {
+    margin: 0 0 0.35rem;
+    font-size: 0.76rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #8d8f87;
+  }
+
+  .section-text {
+    margin: 0;
+    font-size: 0.94rem;
+    line-height: 1.72;
+    color: var(--muted);
+  }
+
+  @media (max-width: 780px) {
+    .pieces-board {
+      aspect-ratio: 0.9;
+    }
+
+    .board-surface {
+      inset: 0.75rem;
+    }
+
+    .piece-name {
+      white-space: normal;
+      text-align: center;
+      max-width: 8.5rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .page {
+      width: min(100% - 1rem, 100%);
+      padding-top: 1rem;
+      padding-bottom: 1.3rem;
+    }
+
+    .pieces-board,
+    #card,
+    #context-card {
+      border-radius: 24px;
+    }
+
+    .card-close {
+      padding: 0.8rem 0.8rem 0;
+    }
+
+    .card-image {
+      margin: -0.1rem 0.85rem 0;
+      min-height: 220px;
+      padding: 0.85rem;
+    }
+
+    .card-image button,
+    .card-image img {
+      min-height: 0;
+      max-height: 260px;
+    }
+
+    .card-copy,
+    .context-copy {
+      padding: 1rem 1rem 1.15rem;
+    }
+  }
 </style>
 </head>
 <body>
+  <main class="page">
+    <section class="hero">
+      <h1>Bicicleta Explotada</h1>
+    </section>
 
-<header>
-  <h1>Anatomía de la Bicicleta</h1>
-  <span class="header-hint">Toca una pieza para explorarla</span>
-</header>
+    <section class="pieces-board" id="pieces-board" aria-label="Piezas de la bicicleta">
+      <div class="board-surface" aria-hidden="true"></div>
+    </section>
 
-<div class="svg-wrap">
-  <svg id="bsvg" viewBox="0 0 620 505" xmlns="http://www.w3.org/2000/svg"></svg>
-</div>
-
-<div id="overlay">
-  <div id="card">
-    <div class="card-close">
-      <button class="close-btn" id="close-btn">×</button>
+    <div class="footer-actions">
+      <button class="context-btn" id="open-context" type="button">Bicicletas Vargas</button>
     </div>
-    <div class="card-img-wrap" id="card-img-wrap"></div>
-    <div class="card-header">
-      <span class="card-badge" id="card-badge"></span>
-      <p class="card-name" id="card-name"></p>
-      <p class="card-materials" id="card-materials"></p>
-    </div>
-    <div class="card-body">
-      <div>
-        <p class="field-label">Función y utilidad</p>
-        <p class="field-text" id="card-fn"></p>
+  </main>
+
+  <div class="modal-overlay" id="overlay" aria-hidden="true">
+    <article id="card" role="dialog" aria-modal="true" aria-labelledby="card-title">
+      <div class="card-close">
+        <button class="close-btn" id="close-btn" aria-label="Cerrar ficha">×</button>
       </div>
-      <div class="eng-block">
-        <p class="eng-label">⚙ ¿Y dónde está la ingeniería?</p>
-        <p class="eng-text" id="card-eng"></p>
+      <div class="card-image" id="card-image-wrap">
+        <button id="card-image-button" type="button" aria-label="Cambiar vista de la pieza">
+          <img id="card-image" alt="">
+        </button>
       </div>
-    </div>
-    <div class="card-footer"></div>
+      <div class="card-copy">
+        <h2 class="card-title" id="card-title"></h2>
+        <p class="card-materials" id="card-materials"></p>
+
+        <div class="card-sections">
+          <section class="card-section">
+            <p class="section-label">Función y utilidad</p>
+            <p class="section-text" id="card-function"></p>
+          </section>
+          <section class="card-section engineering">
+            <p class="section-label">¿Dónde está la ingeniería?</p>
+            <p class="section-text" id="card-engineering"></p>
+          </section>
+          <section class="card-section context">
+            <p class="section-label">Dato y contexto</p>
+            <p class="section-text" id="card-context"></p>
+          </section>
+        </div>
+      </div>
+    </article>
   </div>
-</div>
 
-<footer>Exposición · ¿Y dónde está la ingeniería?</footer>
+  <div class="modal-overlay" id="context-overlay" aria-hidden="true">
+    <article id="context-card" role="dialog" aria-modal="true" aria-labelledby="context-title">
+      <div class="card-close">
+        <button class="close-btn" id="close-context" aria-label="Cerrar información de Bicicletas Vargas">×</button>
+      </div>
+      <div class="context-copy">
+        <h2 class="context-title" id="context-title">Bicicletas Vargas</h2>
+        <div class="context-sections">
+          <section class="context-section">
+            <p class="section-label">Agradecimiento y contexto</p>
+            <p class="section-text">
+              Agradecemos a Bicicletas Vargas por prestar esta bicicleta para la exposición. Bicicletas Vargas es un
+              negocio familiar ligado al eje San Diego de Santiago desde la década de 1970, formalizado en 1981, y
+              dedicado a bicicletas, repuestos y ensamblaje local con componentes importados.
+            </p>
+          </section>
+        </div>
+      </div>
+    </article>
+  </div>
 
 <script>
-/* ─────────────────────────────────────────
-   DATOS
-   Imágenes: colocar archivos en /piezas/
-   Ejemplo: /piezas/cuadro.png
-───────────────────────────────────────── */
-const PARTS = {
-
-  cuadro: {
-    name:'Cuadro', num:'01', c:'#185FA5', bg:'#E6F1FB', tc:'#0C447C',
-    img:'piezas/cuadro.png', imgAlt:'Cuadro visto desde arriba',
-    materials:'Aluminio 6061-T6 · Acero cromo-molibdeno · Fibra de carbono · Titanio',
-    fn:'Es el esqueleto de la bicicleta. Une y posiciona cada componente — ruedas, dirección, transmisión y asiento — transmitiendo todas las fuerzas entre el ciclista y el terreno sin deformarse.',
-    eng:'El cuadro usa el triángulo como unidad estructural porque es la única figura geométrica rígida por naturaleza: una fuerza aplicada a cualquier punto se distribuye como tensión o compresión pura en sus lados, sin generar flexión. El diseño "diamante" (dos triángulos) lleva más de 130 años casi sin cambios porque ninguna otra configuración supera su relación rigidez/peso. El material define el carácter: el aluminio es rígido y ligero pero fatiga; el acero absorbe vibraciones; el carbono permite orientar las fibras para ser rígido donde se necesita y flexible donde conviene.'
+const PARTS = [
+  {
+    id: 'maneta-freno-cambio',
+    number: '01',
+    name: 'Maneta integrada de freno y cambio',
+    shortName: 'Maneta',
+    bg: '#f0ecfb',
+    accent: '#5d4ba1',
+    position: { x: '16%', y: '33%', w: '13%', z: 6 },
+    images: {
+      p1: 'piezas/frenos p1.png',
+      p2: 'piezas/freno con cambio abierto.png'
+    },
+    materials: 'Cuerpo de resina reforzada, palanca de aluminio y mecanismo interno de acero.',
+    fn: 'Reune en una sola interfaz el frenado y el cambio de marchas. Desde aquí el ciclista controla velocidad y cadencia sin soltar el manubrio.',
+    eng: 'La forma curva mejora el apoyo de la mano y la transmisión interna convierte un gesto corto en un movimiento preciso sobre cables o circuito hidráulico.',
+    fact: 'La integración de freno y cambio en una sola pieza permitió mover los controles al manubrio y hacer más seguro cambiar de marcha sin soltar la posición de manejo.'
   },
-
-  horquilla: {
-    name:'Horquilla', num:'02', c:'#4A7C9E', bg:'#E8F4FB', tc:'#1E4E6A',
-    img:'piezas/horquilla.png', imgAlt:'Horquilla delantera',
-    materials:'Acero cromo-molibdeno · Aluminio · Fibra de carbono',
-    fn:'Sostiene la rueda delantera y permite girar el manubrio para dirigir la bicicleta. Es el único punto de contacto entre la dirección y el suelo, absorbiendo cada impacto del camino.',
-    eng:'La clave invisible de la horquilla es el "avance" (rake u offset): la distancia horizontal entre el eje de la rueda y la línea imaginaria que prolonga el tubo de dirección. Este offset genera el "trail" — la distancia en el suelo entre esa línea y el punto de contacto del neumático. Un trail mayor da estabilidad a alta velocidad; uno menor da agilidad al girar. Todo ciclista experimenta esa geometría sin saberlo cada vez que suelta el manubrio y la bici sigue recta sola.'
+  {
+    id: 'manubrio',
+    number: '02',
+    name: 'Manubrio',
+    shortName: 'Manubrio',
+    bg: '#e6f5ef',
+    accent: '#1f7b62',
+    position: { x: '23%', y: '14%', w: '18%', z: 5 },
+    images: {
+      p1: 'piezas/manubrio p1.png',
+      p2: 'piezas/manubrio p2.png'
+    },
+    materials: 'Aluminio conformado, cinta o grips sintéticos y abrazaderas de acero.',
+    fn: 'Es el punto de apoyo de las manos y la palanca principal para orientar la rueda delantera. También organiza la posición del torso sobre la bicicleta.',
+    eng: 'El ancho, el flare y la curvatura determinan cuánto brazo de palanca tiene el ciclista y cómo se reparte la carga entre control, estabilidad y comodidad.',
+    fact: 'La forma drop no es decorativa: ofrece varias posiciones de apoyo y reparte mejor el esfuerzo entre control, comodidad y aerodinámica.'
   },
-
-  'rueda-del': {
-    name:'Rueda delantera', num:'03', c:'#5F5E5A', bg:'#F1EFE8', tc:'#2C2C2A',
-    img:'piezas/rueda-delantera.png', imgAlt:'Rueda delantera vista desde arriba',
-    materials:'Llanta: aluminio o carbono · Rayos: acero inoxidable · Maza: aluminio · Neumático: caucho compuesto',
-    fn:'Dirige la bicicleta y absorbe los impactos del terreno. Convierte el movimiento rotatorio en desplazamiento lineal, rodando sobre el pavimento con la menor resistencia posible.',
-    eng:'Una rueda de bicicleta es un sistema de pretensado: los rayos no empujan la llanta hacia afuera, sino que la cuelgan de la maza jalándola hacia adentro. Todos los rayos están en tensión permanente, y cuando la rueda toca el suelo, los rayos del sector inferior simplemente se tensan menos — no se comprimen. Este principio permite usar rayos de apenas 2mm que serían inútiles en compresión. El tensado correcto convierte una llanta flexible en una estructura que soporta más de 100 veces el peso del propio conjunto.'
+  {
+    id: 'asiento',
+    number: '03',
+    name: 'Asiento',
+    shortName: 'Asiento',
+    bg: '#eaf1fb',
+    accent: '#295b93',
+    position: { x: '79.5%', y: '14%', w: '10%', z: 5 },
+    images: {
+      p1: 'piezas/asiento p1.png',
+      p2: 'piezas/asiento p2.png'
+    },
+    materials: 'Base polimérica, espuma de densidad variable, recubrimiento sintético y rieles metálicos.',
+    fn: 'Sostiene el peso del ciclista y permite pedalear durante periodos largos sin bloquear el movimiento de la pelvis.',
+    eng: 'El canal central descarga presión en tejidos blandos y la flexión controlada de la carcasa reparte esfuerzos entre apoyo y libertad de movimiento.',
+    fact: 'Su abertura central y su longitud responden a la anatomía del apoyo sobre los isquiones y a la necesidad de liberar presión en recorridos largos.'
   },
-
-  'rueda-tra': {
-    name:'Rueda trasera', num:'04', c:'#5F5E5A', bg:'#F1EFE8', tc:'#2C2C2A',
-    img:'piezas/rueda-trasera.png', imgAlt:'Rueda trasera vista desde arriba',
-    materials:'Llanta: aluminio o carbono · Rayos: acero inox · Maza con trinquete: aluminio · Neumático: caucho compuesto',
-    fn:'Recibe la potencia de la cadena y la convierte en movimiento. Soporta la mayor parte del peso del ciclista y es el motor real de la bicicleta.',
-    eng:'La rueda trasera tiene un problema que la delantera no tiene: el cassette ocupa espacio en un lado, obligando a descentrar (dishear) la llanta. Para compensar, los rayos del lado del cassette tienen mayor tensión que los del lado opuesto — una asimetría calculada para que el conjunto quede recto. La maza contiene un mecanismo de trinquete que transmite fuerza al pedalear pero libera la rueda al rodar libre. Ese sonido característico de "tic tic" es la liberación constante de esos trinquetes.'
+  {
+    id: 'tija',
+    number: '04',
+    name: 'Tija de sillín',
+    shortName: 'Tija',
+    bg: '#f0efea',
+    accent: '#666055',
+    position: { x: '66.5%', y: '15%', w: '6.5%', z: 4 },
+    images: {
+      p1: 'piezas/tija p1.png'
+    },
+    materials: 'Aluminio anodizado, pernería de acero y cabeza de ajuste con abrazadera.',
+    fn: 'Conecta el asiento con el cuadro y fija la altura de pedaleo. Un cambio pequeño en esta pieza modifica mucho la postura del cuerpo.',
+    eng: 'Trabaja como una viga en voladizo: debe resistir flexión y vibración sin deformarse demasiado ni transmitir golpes secos al ciclista.',
+    fact: 'Además de sostener el sillín, la tija define cuánto flexa el conjunto trasero: una tija más expuesta puede ayudar a filtrar vibraciones del terreno.'
   },
-
-  manubrio: {
-    name:'Manubrio', num:'05', c:'#0F6E56', bg:'#E1F5EE', tc:'#085041',
-    img:'piezas/manubrio.png', imgAlt:'Manubrio visto desde arriba',
-    materials:'Aluminio 6061-T6 · Aluminio 7075 · Fibra de carbono',
-    fn:'Es el volante de la bicicleta. Permite controlar la dirección, es el punto de apoyo de las manos y aloja los controles de freno y cambio de marcha.',
-    eng:'El ancho del manubrio no es estético: determina la palanca disponible para girar. Uno más ancho da más control (bicis de montaña: 780–800mm); uno más angosto reduce la resistencia aerodinámica (bicis de ruta: 400–420mm). Los manubrios de ruta curvados permiten tres posiciones distintas de mano, cambiando la aerodinámica del ciclista sin cambiar de bicicleta. Cada curva y diámetro tiene una función mecánica precisa.'
+  {
+    id: 'rueda-delantera',
+    number: '05',
+    name: 'Rueda',
+    shortName: 'Rueda',
+    bg: '#f5efe7',
+    accent: '#7c5932',
+    position: { x: '16.5%', y: '69%', w: '27%', z: 1 },
+    images: {
+      p1: 'piezas/rueda p1.png',
+      p2: 'piezas/rueda p2.png'
+    },
+    materials: 'Llanta de aluminio, rayos de acero, maza, disco de freno y neumático con compuesto de caucho.',
+    fn: 'Convierte el giro en desplazamiento. Además de rodar, absorbe parte de las irregularidades del suelo y sostiene una parte crítica del peso total.',
+    eng: 'La rueda es un sistema pretensado: los rayos estabilizan la llanta al trabajar en tensión. Esa lógica permite una estructura muy ligera y sorprendentemente resistente.',
+    fact: 'La rueda moderna mantiene una idea del siglo XIX: una llanta estabilizada por rayos tensados desde el centro, ligera pero resistente.'
   },
-
-  potencia: {
-    name:'Potencia', num:'06', c:'#6B6A65', bg:'#EEEDE8', tc:'#2C2C2A',
-    img:'piezas/potencia.png', imgAlt:'Potencia de bicicleta',
-    materials:'Aluminio forjado 6061 · Aluminio 7075 · Fibra de carbono',
-    fn:'Conecta el manubrio al tubo de dirección del cuadro. Define la distancia horizontal del ciclista al manubrio, afectando directamente su postura, comodidad y eficiencia.',
-    eng:'La potencia es el ajuste más poderoso para optimizar la posición sin cambiar el cuadro. Su longitud (60–130mm) y ángulo (−17° a +17°) determinan cuánto se inclina el ciclista hacia adelante. El punto de fijación trabaja a torsión y flexión simultáneamente — por eso los tornillos tienen torques de apriete tan específicos: demasiado poco y gira; demasiado y fractura el carbono.'
+  {
+    id: 'cuadro',
+    number: '06',
+    name: 'Cuadro',
+    shortName: 'Cuadro',
+    bg: '#e7f0f8',
+    accent: '#205b8f',
+    position: { x: '50%', y: '33%', w: '37%', z: 3 },
+    images: {
+      p1: 'piezas/cuadro p1.png',
+      p2: 'piezas/cuadro p2.png'
+    },
+    materials: 'Aluminio hidroformado, inserciones de acero, punteras mecanizadas y pintura al horno.',
+    fn: 'Es la estructura principal. Define la geometría, recibe las cargas y relaciona entre sí dirección, transmisión, rueda y posición del ciclista.',
+    eng: 'La triangulación reparte esfuerzos de compresión, torsión y flexión con muy poco material. Por eso el cuadro sigue siendo el gran problema estructural de la bicicleta.',
+    fact: 'La forma triangulada del cuadro responde a una necesidad estructural: repartir cargas con el menor material posible. Por eso la bicicleta moderna conserva esta geometría básica desde fines del siglo XIX.'
   },
-
-  sillin: {
-    name:'Sillín', num:'07', c:'#0F6E56', bg:'#E1F5EE', tc:'#085041',
-    img:'piezas/sillin.png', imgAlt:'Sillín visto desde arriba',
-    materials:'Cubierta: cuero sintético o natural · Relleno: espuma de densidad variable · Raíles: acero, titanio o carbono · Base: nylon o carbono',
-    fn:'Soporte principal del ciclista. Distribuye el peso del cuerpo para minimizar la presión en zonas sensibles y permitir pedalear de manera eficiente durante horas.',
-    eng:'El sillín responde a que el ciclista no "se sienta" como en una silla: apoya sobre los isquiones (huesos de la pelvis) y necesita libertad de movimiento para las piernas. Por eso los sillines son estrechos en el centro y más anchos atrás. El canal central reduce la presión sobre tejidos blandos — no es decorativo. La distancia entre los isquiones varía de persona a persona, por eso existen sillines de distintos anchos y el ajuste correcto previene lesiones reales.'
+  {
+    id: 'rueda-trasera',
+    number: '07',
+    name: 'Rueda',
+    shortName: 'Rueda',
+    bg: '#f5efe7',
+    accent: '#7c5932',
+    position: { x: '83.5%', y: '69%', w: '27%', z: 1 },
+    images: {
+      p1: 'piezas/rueda p1.png',
+      p2: 'piezas/rueda p2.png'
+    },
+    materials: 'Llanta de aluminio, rayos de acero, maza, disco de freno y neumático con compuesto de caucho.',
+    fn: 'Convierte el giro en desplazamiento. Además de rodar, absorbe parte de las irregularidades del suelo y sostiene una parte crítica del peso total.',
+    eng: 'La rueda es un sistema pretensado: los rayos estabilizan la llanta al trabajar en tensión. Esa lógica permite una estructura muy ligera y sorprendentemente resistente.',
+    fact: 'La rueda moderna mantiene una idea del siglo XIX: una llanta estabilizada por rayos tensados desde el centro, ligera pero resistente.'
   },
-
-  tija: {
-    name:'Tija de sillín', num:'08', c:'#6B6A65', bg:'#EEEDE8', tc:'#2C2C2A',
-    img:'piezas/tija.png', imgAlt:'Tija de sillín',
-    materials:'Aluminio 6061 · Acero · Fibra de carbono',
-    fn:'Tubo vertical que conecta el sillín al cuadro. Permite ajustar la altura del asiento con precisión milimétrica para adaptar la bicicleta a cada ciclista.',
-    eng:'La tija trabaja como una viga en voladizo: el peso del ciclista genera un momento de flexión en su base. A mayor altura sobre el cuadro, mayor es ese momento. Las marcas de máximo saque no son arbitrarias: son el límite calculado donde la fatiga del material puede causar fractura. Las tijas de carbono absorben vibraciones verticales deflectándose ligeramente, actuando como una suspensión pasiva invisible.'
+  {
+    id: 'pinza-freno-trasera',
+    number: '08',
+    name: 'Pinza de freno',
+    shortName: 'Pinza',
+    bg: '#fdeeee',
+    accent: '#9c3535',
+    position: { x: '81.5%', y: '39%', w: '10%', z: 6 },
+    images: {
+      p1: 'piezas/pinza de freno p1.png',
+      p2: 'piezas/pinza de freno p2.png'
+    },
+    materials: 'Cuerpo de aluminio, pistones internos, pernos de acero y pastillas de fricción.',
+    fn: 'Aprieta el disco unido a la rueda y convierte energía cinética en calor. Es una pieza pequeña, pero decisiva para la seguridad.',
+    eng: 'La pinza debe transformar una fuerza relativamente baja en una presión muy alta y perfectamente alineada sobre el rotor, sin rozar cuando queda liberada.',
+    fact: 'En los frenos de disco, la pinza aprieta un rotor separado de la llanta; eso mejora la frenada en lluvia, barro y terreno suelto.'
   },
-
-  bielas: {
-    name:'Bielas', num:'09', c:'#BA7517', bg:'#FAEEDA', tc:'#633806',
-    img:'piezas/bielas.png', imgAlt:'Bielas de bicicleta',
-    materials:'Aluminio forjado 6061 o 7075 · Fibra de carbono · Acero',
-    fn:'Son los brazos que convierten la fuerza lineal de las piernas en movimiento rotatorio. Transfieren cada pedalada al plato y de ahí a la cadena.',
-    eng:'Las bielas son palancas: su longitud (165–175mm) determina el brazo de momento con que se aplica fuerza. El ángulo entre ambas es exactamente 180° — opuestas — para que mientras una baja la otra sube, eliminando los puntos muertos. El eje central (pedalier) recibe fuerzas laterales, torsionales y de flexión simultáneamente: es la junta más cargada de la bicicleta, por eso su evolución ha sido constante durante décadas.'
+  {
+    id: 'cadena',
+    number: '09',
+    name: 'Cadena',
+    shortName: 'Cadena',
+    bg: '#f1efea',
+    accent: '#57554f',
+    preview: 'piezas/cadena p1.png',
+    position: { x: '69.5%', y: '68%', w: '10.5%', z: 6 },
+    images: {
+      p1: 'piezas/cadena p0.png',
+      p2: 'piezas/cadena p1.png'
+    },
+    materials: 'Placas de acero, pasadores endurecidos, rodillos y recubrimientos anticorrosivos.',
+    fn: 'Transfiere la potencia de las piernas a la rueda trasera. Es el vínculo directo entre el esfuerzo del cuerpo y el movimiento de avance.',
+    eng: 'Su eficacia depende de cientos de articulaciones pequeñas. Cada eslabón debe flexar lo suficiente para rodear piñones y platos, pero sin perder rigidez longitudinal.',
+    fact: 'La cadena de rodillos hizo posible separar dirección y tracción: la rueda delantera puede guiar y la trasera impulsar sin perder eficiencia.'
   },
-
-  plato: {
-    name:'Plato', num:'10', c:'#854F0B', bg:'#FAEEDA', tc:'#412402',
-    img:'piezas/plato.png', imgAlt:'Plato visto desde arriba',
-    materials:'Aluminio 7075-T6 · Acero endurecido (dientes) · Carbono con insertos de acero',
-    fn:'Rueda dentada unida a las bielas que captura la cadena y la arrastra hacia el cassette trasero, transmitiendo la potencia del pedaleo a la rueda.',
-    eng:'Los dientes del plato no son simples picos: cada uno tiene un perfil asimétrico diseñado para que la cadena entre suavemente en carga y salga limpiamente. Los modernos tienen dientes de distintas alturas alternadas para guiar los eslabones interiores y exteriores de la cadena. Los platos ovalados son una solución de ingeniería para reducir el punto muerto del pedaleo, aumentando la palanca en el sector de máxima fuerza de la pierna.'
+  {
+    id: 'pedal-izquierdo',
+    number: '10',
+    name: 'Pedal',
+    shortName: 'Pedal',
+    preview: 'piezas/pedal p1.png',
+    bg: '#f5efe8',
+    accent: '#7a6246',
+    position: { x: '42%', y: '57%', w: '5.5%', z: 6 },
+    images: {
+      p1: 'piezas/pedal p0.png'
+    },
+    materials: 'Cuerpo polimérico, eje metálico, rodamientos y rosca de fijación.',
+    fn: 'Es la interfaz más directa entre el pie y la transmisión. Recibe la carga de la pierna y la entrega a la biela.',
+    eng: 'Su plataforma debe maximizar apoyo con el menor peso posible. La rosca y el eje soportan cargas cíclicas muy altas en un volumen mínimo.',
+    fact: 'Los pedales de plataforma amplían la base de apoyo del pie y permiten usar calzado cotidiano; su forma abierta ayuda a evacuar agua y suciedad.'
   },
-
-  pedales: {
-    name:'Pedales', num:'11', c:'#BA7517', bg:'#FAEEDA', tc:'#633806',
-    img:'piezas/pedales.png', imgAlt:'Pedales de bicicleta',
-    materials:'Cuerpo: aluminio CNC o plástico reforzado · Eje: acero cromado o titanio · Pines: acero inoxidable',
-    fn:'Son la interfaz entre el cuerpo del ciclista y la bicicleta. Reciben la fuerza de los pies y la transmiten a las bielas, permitiendo que cada empuje se convierta en movimiento.',
-    eng:'El eje del pedal es una viga sometida a flexión pura: el peso del ciclista actúa lejos del punto de apoyo, generando enormes momentos. Los pedales automáticos añaden una articulación que permite al pie flotar lateralmente algunos grados — el "float" — acomodándose a la biomecánica de cada rodilla. La retención con resorte calibrado es suficientemente fuerte para no soltar al pedalear, suficientemente débil para liberar el pie con un giro lateral en una caída.'
+  {
+    id: 'biela-plato',
+    number: '11',
+    name: 'Biela con platos',
+    shortName: 'Biela + platos',
+    bg: '#f8efdf',
+    accent: '#94661b',
+    position: { x: '49.5%', y: '74%', w: '15%', z: 5 },
+    images: {
+      p2: 'piezas/biela p2.png'
+    },
+    materials: 'Biela de aluminio y coronas dentadas de acero o aluminio.',
+    fn: 'Convierte la fuerza lineal de la pierna en giro y entrega ese movimiento a la cadena mediante los platos.',
+    eng: 'Es un conjunto de palanca y engranaje. La longitud de la biela define el brazo de momento, mientras el número de dientes del plato regula el desarrollo.',
+    fact: 'La relación entre largo de biela y número de dientes define cómo se transforma la fuerza del cuerpo en desarrollo mecánico.'
   },
-
-  cadena: {
-    name:'Cadena', num:'12', c:'#5F5E5A', bg:'#F1EFE8', tc:'#2C2C2A',
-    img:'piezas/cadena.png', imgAlt:'Cadena de bicicleta',
-    materials:'Placas: acero al carbono · Pines: acero endurecido · Rodillos: acero · Recubrimiento: níquel, teflón o DLC',
-    fn:'Transfiere la potencia del plato al cassette trasero. Es el único elemento que conecta la fuerza del ciclista con la rueda, recorriendo todo el sistema de transmisión.',
-    eng:'La cadena de rodillos tiene una eficiencia mecánica superior al 98%: en vez de deslizarse sobre los dientes (fricción cinética alta), el rodillo rueda sobre ellos (fricción de rodamiento bajísima). El eslabonado articula en dos planos para doblar lateralmente al cambiar de piñón y verticalmente al envolver la rueda. La tensión en el ramal superior puede superar los 1000N durante un sprint — sobre un componente de 250 gramos con piezas de 2mm de grosor.'
+  {
+    id: 'cassete',
+    number: '12',
+    name: 'Cassete',
+    shortName: 'Cassete',
+    bg: '#fbf2e6',
+    accent: '#8b5f1d',
+    position: { x: '61.5%', y: '73%', w: '8.5%', z: 5 },
+    images: {
+      p1: 'piezas/cassete p1.png'
+    },
+    materials: 'Piñones de acero, núcleo interior y cierre roscado.',
+    fn: 'Ofrece distintas relaciones de transmisión en la rueda trasera. Cambiar de piñón modifica el equilibrio entre fuerza y velocidad.',
+    eng: 'El tamaño escalonado de los dientes permite variar desarrollo sin desmontar nada. Cada salto entre coronas modifica la cadencia disponible para el ciclista.',
+    fact: 'El cassette reúne varios piñones en un solo cuerpo desmontable; esa modularidad facilita el cambio de relaciones y el mantenimiento.'
   },
-
-  cassette: {
-    name:'Cassette', num:'13', c:'#854F0B', bg:'#FAEEDA', tc:'#412402',
-    img:'piezas/cassette.png', imgAlt:'Cassette visto desde arriba',
-    materials:'Piñones grandes: acero aleado · Piñones pequeños: acero endurecido o titanio · Araña: aluminio',
-    fn:'Conjunto de piñones en la rueda trasera. Al seleccionar distintos piñones, el ciclista cambia la relación de transmisión para adaptar el esfuerzo al terreno.',
-    eng:'La progresión entre piñones no es aleatoria: está calculada para que el salto de cadencia entre marchas sea lo más uniforme posible. Los cassettes de 12 velocidades van de 10 a 52 dientes con escalones de 1–2 dientes en piñones pequeños (velocidad en llano) y de 4–6 en los grandes (subidas). El mecanismo de trinquete de la maza convierte movimiento alternativo en continuo — tres o más trinquetes enganchan al pedalear y se retraen con resortes al rodar libre.'
+  {
+    id: 'biela-izquierda',
+    number: '13',
+    name: 'Biela izquierda',
+    shortName: 'Biela izq.',
+    bg: '#f3f0ea',
+    accent: '#6e6252',
+    position: { x: '38.5%', y: '78%', w: '6.5%', z: 5 },
+    images: {
+      p1: 'piezas/pedal2 p1.png',
+      p2: 'piezas/pedal2 p2.png'
+    },
+    materials: 'Brazo de aluminio forjado con interfaz mecanizada para el eje y el pedal.',
+    fn: 'Completa el par de bielas y asegura que ambas piernas trabajen sobre el mismo eje de giro.',
+    eng: 'Aunque parece simple, debe ser muy rígida en torsión y muy estable en la unión con el eje para no perder energía ni generar holguras.',
+    fact: 'Aunque parece un brazo simple, trabaja a torsión en cada pedalada y debe mantenerse perfectamente alineada con la biela opuesta.'
   },
-
-  desviador: {
-    name:'Desviador trasero', num:'14', c:'#993C1D', bg:'#FAECE7', tc:'#4A1B0C',
-    img:'piezas/desviador.png', imgAlt:'Desviador trasero de bicicleta',
-    materials:'Brazos: aluminio o carbono · Resortes: acero de alta resistencia · Poleas: aluminio con rodamientos · Cage: plástico reforzado o carbono',
-    fn:'Desplaza lateralmente la cadena entre los piñones del cassette al accionar la maneta de cambio. Mantiene además la cadena tensa en todo momento mediante un brazo tensor con resorte.',
-    eng:'El desviador es un paralelogramo articulado: sus cuatro brazos garantizan que la jaula siempre mantenga la misma orientación vertical, sin importar en qué piñón esté. El resorte interno tiene una tensión calibrada para absorber las diferencias de longitud de cadena entre el piñón más pequeño y el más grande. Los desviadores electrónicos reemplazan el cable de acero por un motor de pasos que posiciona la cadena con precisión de décimas de milímetro.'
+  {
+    id: 'pedal-derecho',
+    number: '14',
+    name: 'Pedal',
+    shortName: 'Pedal',
+    preview: 'piezas/pedal p1.png',
+    bg: '#f5efe8',
+    accent: '#7a6246',
+    position: { x: '34%', y: '85%', w: '5.5%', z: 6 },
+    images: {
+      p1: 'piezas/pedal p0.png'
+    },
+    materials: 'Cuerpo polimérico, eje metálico, rodamientos y rosca de fijación.',
+    fn: 'Es la interfaz más directa entre el pie y la transmisión. Recibe la carga de la pierna y la entrega a la biela.',
+    eng: 'Su plataforma debe maximizar apoyo con el menor peso posible. La rosca y el eje soportan cargas cíclicas muy altas en un volumen mínimo.',
+    fact: 'Los pedales de plataforma amplían la base de apoyo del pie y permiten usar calzado cotidiano; su forma abierta ayuda a evacuar agua y suciedad.'
   },
+];
 
-  frenos: {
-    name:'Sistema de frenos', num:'15', c:'#A32D2D', bg:'#FCEBEB', tc:'#501313',
-    img:'piezas/frenos.png', imgAlt:'Frenos de bicicleta',
-    materials:'Palanca: aluminio forjado · Pastillas: resina o sinterizado metálico · Disco: acero inoxidable 410 · Línea hidráulica: nylon trenzado con aceite mineral o DOT',
-    fn:'Convierten la energía cinética en calor mediante fricción, desacelerando y deteniendo la bicicleta de manera controlada. Son el sistema de seguridad más crítico de la bicicleta.',
-    eng:'Los frenos de disco hidráulicos aplican la física de Pascal: una pequeña fuerza sobre el pistón de la palanca se multiplica en los pistones de la pinza gracias a la diferencia de áreas. Una fuerza de 50N en la maneta puede generar más de 800N sobre el disco. El calor al frenar en una bajada larga puede superar los 400°C — por eso los discos tienen ranuras y orificios para disipar calor. Las pastillas de sinterizado metálico aguantan más calor; las de resina tienen tacto más suave pero se degradan antes bajo calor extremo.'
-  },
+const board = document.getElementById('pieces-board');
+const overlay = document.getElementById('overlay');
+const closeBtn = document.getElementById('close-btn');
+const cardImageWrap = document.getElementById('card-image-wrap');
+const cardImageButton = document.getElementById('card-image-button');
+const cardImage = document.getElementById('card-image');
+const cardTitle = document.getElementById('card-title');
+const cardMaterials = document.getElementById('card-materials');
+const cardFunction = document.getElementById('card-function');
+const cardEngineering = document.getElementById('card-engineering');
+const cardContext = document.getElementById('card-context');
+const contextOverlay = document.getElementById('context-overlay');
+const openContextBtn = document.getElementById('open-context');
+const closeContextBtn = document.getElementById('close-context');
 
-};
+let activePart = null;
+let activeImages = [];
+let activeIndex = 0;
+const imageCenterCache = new Map();
 
-/* ── SVG ── */
-const NS = 'http://www.w3.org/2000/svg';
-function el(tag, a={}) {
-  const e = document.createElementNS(NS, tag);
-  for (const [k,v] of Object.entries(a)) e.setAttribute(k,v);
-  return e;
+function getPreviewImage(part) {
+  if (part.preview) return part.preview;
+  if (part.images.p0) return part.images.p0;
+  if (part.images.p1) return part.images.p1;
+  return part.images.p2;
 }
-function lbl(x,y,text,fill,size=9,anchor='middle') {
-  const t = el('text',{x,y,'text-anchor':anchor,'font-size':size,fill,'pointer-events':'none','font-family':'DM Sans, sans-serif'});
-  t.textContent = text; return t;
+
+function getCardImages(part) {
+  const images = [];
+  if (part.images.p1) images.push({ src: part.images.p1 });
+  if (part.images.p2 && part.images.p2 !== part.images.p1) images.push({ src: part.images.p2 });
+  if (!images.length && part.images.p0) images.push({ src: part.images.p0 });
+  if (!images.length && part.images.p2) images.push({ src: part.images.p2 });
+  return images;
 }
-function mkPart(id) {
-  const g = el('g',{class:'part','data-id':id});
-  g.addEventListener('click', e=>{e.stopPropagation(); openCard(id);});
-  g.addEventListener('touchstart', e=>{e.preventDefault(); openCard(id);},{passive:false});
-  return g;
+
+function buildBoard() {
+  PARTS.forEach((part) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'piece';
+    button.style.setProperty('--x', part.position.x);
+    button.style.setProperty('--y', part.position.y);
+    button.style.setProperty('--w', part.position.w);
+    button.style.setProperty('--z', part.position.z || 1);
+    button.style.setProperty('--accent', part.accent || '#181814');
+    button.setAttribute('aria-label', 'Abrir ficha de ' + part.name);
+    button.title = part.name;
+
+    button.innerHTML = `
+      <img src="${getPreviewImage(part)}" alt="${part.name}">
+      <span class="piece-name">${part.shortName || part.name}</span>
+    `;
+
+    button.addEventListener('click', () => openPartCard(part));
+    board.appendChild(button);
+  });
 }
 
-const svg = document.getElementById('bsvg');
+function lockBody() {
+  document.body.style.overflow = 'hidden';
+}
 
-// CUADRO
-(()=>{const g=mkPart('cuadro');g.append(el('polygon',{points:'222,152 368,170 350,310 222,207',fill:PARTS.cuadro.bg,stroke:'none',opacity:.5}));g.append(el('polygon',{points:'368,170 432,293 350,310',fill:PARTS.cuadro.bg,stroke:'none',opacity:.32}));[['M 222,152 L 222,207',4],['M 222,155 L 367,172',4],['M 222,205 L 350,310',4],['M 367,172 L 350,310',4],['M 350,310 L 432,293',3.5],['M 367,172 L 432,293',3.5]].forEach(([d,w])=>g.append(el('path',{d,fill:'none',stroke:PARTS.cuadro.c,'stroke-width':w,'stroke-linecap':'round'})));g.append(el('rect',{x:214,y:147,width:14,height:63,rx:4,fill:PARTS.cuadro.c}));g.append(el('circle',{cx:350,cy:310,r:9,fill:PARTS.cuadro.c}));g.append(lbl(292,232,'Cuadro',PARTS.cuadro.tc,10));svg.append(g);})();
+function unlockBody() {
+  if (!overlay.classList.contains('open') && !contextOverlay.classList.contains('open')) {
+    document.body.style.overflow = '';
+  }
+}
 
-// HORQUILLA
-(()=>{const g=mkPart('horquilla');g.append(el('rect',{x:139,y:202,width:36,height:11,rx:3,fill:PARTS.horquilla.c}));g.append(el('line',{x1:157,y1:155,x2:157,y2:203,stroke:PARTS.horquilla.c,'stroke-width':4.5,'stroke-linecap':'round'}));g.append(el('path',{d:'M 148,213 Q 118,268 112,332',fill:'none',stroke:PARTS.horquilla.c,'stroke-width':3.5,'stroke-linecap':'round'}));g.append(el('path',{d:'M 166,213 Q 180,268 172,332',fill:'none',stroke:PARTS.horquilla.c,'stroke-width':3.5,'stroke-linecap':'round'}));g.append(el('line',{x1:107,y1:332,x2:177,y2:332,stroke:PARTS.horquilla.c,'stroke-width':3,'stroke-linecap':'round'}));g.append(el('rect',{x:96,y:147,width:88,height:192,rx:4,fill:'transparent','pointer-events':'all'}));g.append(lbl(142,352,'Horquilla',PARTS.horquilla.tc));svg.append(g);})();
+function applyContentCentering(img, src) {
+  const cached = imageCenterCache.get(src);
+  if (cached) {
+    img.style.transform = `translate(${cached.x}%, ${cached.y}%)`;
+    return;
+  }
 
-// RUEDAS
-function mkWheel(cx,cy,r,id){const g=mkPart(id);g.append(el('circle',{cx,cy,r:r-5,fill:PARTS[id].bg,opacity:.48}));g.append(el('circle',{cx,cy,r,fill:'none',stroke:PARTS[id].c,'stroke-width':8}));g.append(el('circle',{cx,cy,r:r-12,fill:'none',stroke:PARTS[id].c,'stroke-width':1.5,opacity:.58}));g.append(el('circle',{cx,cy,r:7,fill:PARTS[id].c}));for(let i=0;i<12;i++){const a=i*30*Math.PI/180;g.append(el('line',{x1:cx+Math.cos(a)*8,y1:cy+Math.sin(a)*8,x2:cx+Math.cos(a)*(r-13),y2:cy+Math.sin(a)*(r-13),stroke:PARTS[id].c,'stroke-width':1.2,opacity:.4}));}g.append(lbl(cx,cy+r+14,PARTS[id].name,PARTS[id].tc));return g;}
-svg.append(mkWheel(90,388,68,'rueda-del'));
-svg.append(mkWheel(528,388,68,'rueda-tra'));
+  const width = img.naturalWidth;
+  const height = img.naturalHeight;
+  if (!width || !height) {
+    img.style.transform = 'translate(0, 0)';
+    return;
+  }
 
-// MANUBRIO
-(()=>{const g=mkPart('manubrio');g.append(el('rect',{x:45,y:62,width:148,height:58,rx:4,fill:PARTS.manubrio.bg,opacity:.01,'pointer-events':'all'}));g.append(el('line',{x1:64,y1:80,x2:178,y2:80,stroke:PARTS.manubrio.c,'stroke-width':5,'stroke-linecap':'round'}));g.append(el('path',{d:'M 70,80 Q 57,80 57,94 L 57,114',fill:'none',stroke:PARTS.manubrio.c,'stroke-width':4,'stroke-linecap':'round'}));g.append(el('path',{d:'M 172,80 Q 185,80 185,94 L 185,114',fill:'none',stroke:PARTS.manubrio.c,'stroke-width':4,'stroke-linecap':'round'}));g.append(lbl(120,128,'Manubrio',PARTS.manubrio.tc));svg.append(g);})();
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
 
-// POTENCIA
-(()=>{const g=mkPart('potencia');g.append(el('rect',{x:177,y:110,width:50,height:27,rx:4,fill:PARTS.potencia.bg,stroke:PARTS.potencia.c,'stroke-width':1.5}));g.append(lbl(202,123,'Potencia',PARTS.potencia.tc));svg.append(g);})();
+  const ctx = canvas.getContext('2d', { willReadFrequently: true });
+  if (!ctx) {
+    img.style.transform = 'translate(0, 0)';
+    return;
+  }
 
-// SILLÍN
-(()=>{const g=mkPart('sillin');g.append(el('ellipse',{cx:442,cy:68,rx:64,ry:22,fill:PARTS.sillin.bg,stroke:PARTS.sillin.c,'stroke-width':1.5}));g.append(el('line',{x1:394,y1:74,x2:490,y2:74,stroke:PARTS.sillin.c,'stroke-width':1.5,opacity:.38}));g.append(lbl(442,68,'Sillín',PARTS.sillin.tc));svg.append(g);})();
+  ctx.drawImage(img, 0, 0);
+  const { data } = ctx.getImageData(0, 0, width, height);
 
-// TIJA
-(()=>{const g=mkPart('tija');g.append(el('rect',{x:433,y:95,width:18,height:65,rx:4,fill:PARTS.tija.bg,stroke:PARTS.tija.c,'stroke-width':1.5}));g.append(lbl(442,173,'Tija de sillín',PARTS.tija.tc,8));svg.append(g);})();
+  let minX = width;
+  let minY = height;
+  let maxX = -1;
+  let maxY = -1;
 
-// PLATO
-(()=>{const g=mkPart('plato');g.append(el('circle',{cx:252,cy:382,r:40,fill:PARTS.plato.bg,stroke:PARTS.plato.c,'stroke-width':2}));g.append(el('circle',{cx:252,cy:382,r:27,fill:'none',stroke:PARTS.plato.c,'stroke-width':1,opacity:.5}));g.append(el('circle',{cx:252,cy:382,r:6,fill:PARTS.plato.c}));for(let i=0;i<18;i++){const a=i*20*Math.PI/180;g.append(el('circle',{cx:252+Math.cos(a)*40,cy:382+Math.sin(a)*40,r:2.5,fill:PARTS.plato.c}));}g.append(lbl(252,434,'Plato',PARTS.plato.tc));svg.append(g);})();
+  for (let y = 0; y < height; y += 1) {
+    for (let x = 0; x < width; x += 1) {
+      const alpha = data[(y * width + x) * 4 + 3];
+      if (alpha === 0) continue;
+      if (x < minX) minX = x;
+      if (y < minY) minY = y;
+      if (x > maxX) maxX = x;
+      if (y > maxY) maxY = y;
+    }
+  }
 
-// BIELAS
-(()=>{const cx=252,cy=382,g=mkPart('bielas');g.append(el('line',{x1:cx,y1:cy,x2:cx-47,y2:cy+28,stroke:PARTS.bielas.c,'stroke-width':7,'stroke-linecap':'round'}));g.append(el('line',{x1:cx,y1:cy,x2:cx+47,y2:cy-28,stroke:PARTS.bielas.c,'stroke-width':7,'stroke-linecap':'round'}));g.append(el('rect',{x:cx-62,y:cy-44,width:124,height:88,rx:4,fill:'transparent','pointer-events':'all'}));g.append(lbl(cx+65,cy-38,'Bielas',PARTS.bielas.tc,9,'start'));svg.append(g);})();
+  if (maxX < 0 || maxY < 0) {
+    img.style.transform = 'translate(0, 0)';
+    return;
+  }
 
-// PEDALES
-(()=>{const g=mkPart('pedales');g.append(el('rect',{x:158,y:420,width:70,height:19,rx:3,fill:PARTS.pedales.bg,stroke:PARTS.pedales.c,'stroke-width':1.5}));g.append(el('rect',{x:276,y:341,width:70,height:19,rx:3,fill:PARTS.pedales.bg,stroke:PARTS.pedales.c,'stroke-width':1.5}));g.append(lbl(193,450,'Pedales',PARTS.pedales.tc));svg.append(g);})();
-
-// CADENA
-(()=>{const g=mkPart('cadena'),d='M 290,378 C 340,370 395,364 458,358';g.append(el('path',{d,fill:'none',stroke:PARTS.cadena.c,'stroke-width':6,'stroke-dasharray':'6,3','stroke-linecap':'round'}));g.append(el('path',{d,fill:'none',stroke:'transparent','stroke-width':15,'pointer-events':'all'}));g.append(lbl(378,350,'Cadena',PARTS.cadena.tc));svg.append(g);})();
-
-// CASSETTE
-(()=>{const g=mkPart('cassette');[38,30,22,15].forEach((r,i)=>g.append(el('circle',{cx:467,cy:348,r,fill:i===0?PARTS.cassette.bg:'none',stroke:PARTS.cassette.c,'stroke-width':i===0?1.5:1,opacity:i===0?1:.6})));g.append(el('circle',{cx:467,cy:348,r:5,fill:PARTS.cassette.c}));g.append(lbl(467,394,'Cassette',PARTS.cassette.tc));svg.append(g);})();
-
-// DESVIADOR
-(()=>{const g=mkPart('desviador');g.append(el('rect',{x:498,y:285,width:76,height:50,rx:6,fill:PARTS.desviador.bg,stroke:PARTS.desviador.c,'stroke-width':1.5}));g.append(el('circle',{cx:513,cy:305,r:9,fill:'none',stroke:PARTS.desviador.c,'stroke-width':1.5}));g.append(el('circle',{cx:559,cy:320,r:9,fill:'none',stroke:PARTS.desviador.c,'stroke-width':1.5}));g.append(el('line',{x1:513,y1:305,x2:559,y2:320,stroke:PARTS.desviador.c,'stroke-width':1.5}));g.append(lbl(536,348,'Desviador trasero',PARTS.desviador.tc,8));svg.append(g);})();
-
-// FRENOS
-(()=>{const g=mkPart('frenos');g.append(el('path',{d:'M 52,448 L 52,462 Q 52,473 64,473 L 103,473 Q 115,473 115,462 L 115,448',fill:PARTS.frenos.bg,stroke:PARTS.frenos.c,'stroke-width':1.5,'stroke-linecap':'round'}));g.append(el('path',{d:'M 478,448 L 478,462 Q 478,473 490,473 L 527,473 Q 539,473 539,462 L 539,448',fill:PARTS.frenos.bg,stroke:PARTS.frenos.c,'stroke-width':1.5,'stroke-linecap':'round'}));g.append(lbl(83,487,'Freno delantero',PARTS.frenos.tc,8));g.append(lbl(508,487,'Freno trasero',PARTS.frenos.tc,8));svg.append(g);})();
-
-/* ── INTERACCIÓN ── */
-function openCard(id) {
-  const d = PARTS[id];
-  if (!d) return;
-
-  svg.querySelectorAll('.part').forEach(p =>
-    p.style.opacity = p.getAttribute('data-id') === id ? '1' : '0.15'
-  );
-
-  // badge
-  const badge = document.getElementById('card-badge');
-  badge.textContent = 'Pieza ' + d.num;
-  badge.style.cssText = `display:inline-block;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:20px;margin-bottom:.5rem;font-weight:500;background:${d.bg};color:${d.tc};border:.5px solid ${d.c}`;
-
-  document.getElementById('card-name').textContent = d.name;
-  document.getElementById('card-materials').textContent = d.materials;
-  document.getElementById('card-fn').textContent = d.fn;
-  document.getElementById('card-eng').textContent = d.eng;
-
-  // imagen
-  const wrap = document.getElementById('card-img-wrap');
-  wrap.style.background = d.bg;
-  wrap.innerHTML = '';
-  const img = document.createElement('img');
-  img.alt = d.imgAlt;
-  img.src = d.img;
-  img.onerror = () => {
-    wrap.innerHTML = `
-      <div class="img-placeholder">
-        <span class="ph-icon">📷</span>
-        <span class="ph-name">${d.name}</span>
-        <span class="ph-sub">Reemplazar con foto real → ${d.img}</span>
-      </div>`;
+  const bboxCenterX = (minX + maxX) / 2;
+  const bboxCenterY = (minY + maxY) / 2;
+  const offsetX = ((width / 2 - bboxCenterX) / width) * 100;
+  const offsetY = ((height / 2 - bboxCenterY) / height) * 100;
+  const result = {
+    x: Number(offsetX.toFixed(3)),
+    y: Number(offsetY.toFixed(3))
   };
-  wrap.append(img);
 
-  document.getElementById('card').scrollTop = 0;
-  document.getElementById('overlay').classList.add('open');
+  imageCenterCache.set(src, result);
+  img.style.transform = `translate(${result.x}%, ${result.y}%)`;
 }
 
-function closeCard() {
-  document.getElementById('overlay').classList.remove('open');
-  svg.querySelectorAll('.part').forEach(p => p.style.opacity = '1');
+function renderCardImage() {
+  if (!activePart || !activeImages.length) return;
+  const current = activeImages[activeIndex];
+  cardImage.style.transform = 'translate(0, 0)';
+  cardImage.src = current.src;
+  cardImage.alt = activePart.name;
+  cardImageButton.classList.toggle('static', activeImages.length < 2);
+  cardImageButton.setAttribute(
+    'aria-label',
+    activeImages.length > 1 ? `Cambiar vista de ${activePart.name}` : activePart.name
+  );
 }
 
-document.getElementById('close-btn').addEventListener('click', closeCard);
-document.getElementById('overlay').addEventListener('click', e => {
-  if (!e.target.closest('#card')) closeCard();
+cardImage.addEventListener('load', () => {
+  if (!cardImage.currentSrc) return;
+  applyContentCentering(cardImage, cardImage.currentSrc);
 });
-svg.addEventListener('click', e => {
-  if (!e.target.closest('.part')) closeCard();
+
+function openPartCard(part) {
+  activePart = part;
+  if (!activePart) return;
+
+  activeImages = getCardImages(activePart);
+  activeIndex = 0;
+
+  cardImageWrap.style.background = activePart.bg;
+  cardTitle.textContent = activePart.name;
+  cardMaterials.textContent = activePart.materials;
+  cardFunction.textContent = activePart.fn;
+  cardEngineering.textContent = activePart.eng;
+  cardContext.textContent = activePart.fact;
+
+  renderCardImage();
+  overlay.classList.add('open');
+  overlay.setAttribute('aria-hidden', 'false');
+  lockBody();
+}
+
+function closePartCard() {
+  overlay.classList.remove('open');
+  overlay.setAttribute('aria-hidden', 'true');
+  activePart = null;
+  activeImages = [];
+  activeIndex = 0;
+  unlockBody();
+}
+
+function openContextModal() {
+  contextOverlay.classList.add('open');
+  contextOverlay.setAttribute('aria-hidden', 'false');
+  lockBody();
+}
+
+function closeContextModal() {
+  contextOverlay.classList.remove('open');
+  contextOverlay.setAttribute('aria-hidden', 'true');
+  unlockBody();
+}
+
+cardImageButton.addEventListener('click', () => {
+  if (activeImages.length < 2) return;
+  activeIndex = (activeIndex + 1) % activeImages.length;
+  renderCardImage();
 });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCard(); });
+
+closeBtn.addEventListener('click', closePartCard);
+overlay.addEventListener('click', (event) => {
+  if (!event.target.closest('#card')) closePartCard();
+});
+
+openContextBtn.addEventListener('click', openContextModal);
+closeContextBtn.addEventListener('click', closeContextModal);
+contextOverlay.addEventListener('click', (event) => {
+  if (!event.target.closest('#context-card')) closeContextModal();
+});
+
+document.addEventListener('keydown', (event) => {
+  if (event.key !== 'Escape') return;
+  if (overlay.classList.contains('open')) closePartCard();
+  if (contextOverlay.classList.contains('open')) closeContextModal();
+});
+
+buildBoard();
 </script>
 </body>
 </html>
