@@ -215,8 +215,6 @@
     max-height: 340px;
     object-fit: contain;
     filter: drop-shadow(0 16px 24px rgba(0, 0, 0, 0.14));
-    transform-origin: center center;
-    transition: transform 0.18s ease;
   }
 
   .card-copy,
@@ -491,7 +489,8 @@ const PARTS = [
     position: { x: '50%', y: '33%', w: '37%', z: 3 },
     images: {
       p1: 'piezas/cuadro p1.png',
-      p2: 'piezas/cuadro p2.png'
+      p2: 'piezas/cuadro p2.png',
+      p3: 'piezas/cuadro p3.png'
     },
     materials: 'Aluminio hidroformado, inserciones de acero, punteras mecanizadas y pintura al horno.',
     fn: 'Es la estructura principal. Define la geometría, recibe las cargas y relaciona entre sí dirección, transmisión, rueda y posición del ciclista.',
@@ -576,6 +575,7 @@ const PARTS = [
     accent: '#94661b',
     position: { x: '49.5%', y: '74%', w: '15%', z: 5 },
     images: {
+      p1: 'piezas/biela p1.png',
       p2: 'piezas/biela p2.png'
     },
     materials: 'Biela de aluminio y coronas dentadas de acero o aluminio.',
@@ -653,7 +653,6 @@ const closeContextBtn = document.getElementById('close-context');
 let activePart = null;
 let activeImages = [];
 let activeIndex = 0;
-const imageCenterCache = new Map();
 
 function getPreviewImage(part) {
   if (part.preview) return part.preview;
@@ -664,8 +663,11 @@ function getPreviewImage(part) {
 
 function getCardImages(part) {
   const images = [];
-  if (part.images.p1) images.push({ src: part.images.p1 });
-  if (part.images.p2 && part.images.p2 !== part.images.p1) images.push({ src: part.images.p2 });
+  ['p1', 'p2', 'p3'].forEach((key) => {
+    if (!part.images[key]) return;
+    if (images.some((image) => image.src === part.images[key])) return;
+    images.push({ src: part.images[key] });
+  });
   if (!images.length && part.images.p0) images.push({ src: part.images.p0 });
   if (!images.length && part.images.p2) images.push({ src: part.images.p2 });
   return images;
@@ -704,71 +706,9 @@ function unlockBody() {
   }
 }
 
-function applyContentCentering(img, src) {
-  const cached = imageCenterCache.get(src);
-  if (cached) {
-    img.style.transform = `translate(${cached.x}%, ${cached.y}%)`;
-    return;
-  }
-
-  const width = img.naturalWidth;
-  const height = img.naturalHeight;
-  if (!width || !height) {
-    img.style.transform = 'translate(0, 0)';
-    return;
-  }
-
-  const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-
-  const ctx = canvas.getContext('2d', { willReadFrequently: true });
-  if (!ctx) {
-    img.style.transform = 'translate(0, 0)';
-    return;
-  }
-
-  ctx.drawImage(img, 0, 0);
-  const { data } = ctx.getImageData(0, 0, width, height);
-
-  let minX = width;
-  let minY = height;
-  let maxX = -1;
-  let maxY = -1;
-
-  for (let y = 0; y < height; y += 1) {
-    for (let x = 0; x < width; x += 1) {
-      const alpha = data[(y * width + x) * 4 + 3];
-      if (alpha === 0) continue;
-      if (x < minX) minX = x;
-      if (y < minY) minY = y;
-      if (x > maxX) maxX = x;
-      if (y > maxY) maxY = y;
-    }
-  }
-
-  if (maxX < 0 || maxY < 0) {
-    img.style.transform = 'translate(0, 0)';
-    return;
-  }
-
-  const bboxCenterX = (minX + maxX) / 2;
-  const bboxCenterY = (minY + maxY) / 2;
-  const offsetX = ((width / 2 - bboxCenterX) / width) * 100;
-  const offsetY = ((height / 2 - bboxCenterY) / height) * 100;
-  const result = {
-    x: Number(offsetX.toFixed(3)),
-    y: Number(offsetY.toFixed(3))
-  };
-
-  imageCenterCache.set(src, result);
-  img.style.transform = `translate(${result.x}%, ${result.y}%)`;
-}
-
 function renderCardImage() {
   if (!activePart || !activeImages.length) return;
   const current = activeImages[activeIndex];
-  cardImage.style.transform = 'translate(0, 0)';
   cardImage.src = current.src;
   cardImage.alt = activePart.name;
   cardImageButton.classList.toggle('static', activeImages.length < 2);
@@ -777,11 +717,6 @@ function renderCardImage() {
     activeImages.length > 1 ? `Cambiar vista de ${activePart.name}` : activePart.name
   );
 }
-
-cardImage.addEventListener('load', () => {
-  if (!cardImage.currentSrc) return;
-  applyContentCentering(cardImage, cardImage.currentSrc);
-});
 
 function openPartCard(part) {
   activePart = part;
