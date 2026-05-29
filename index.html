@@ -35,8 +35,18 @@
   }
 
   .hero {
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
     margin-bottom: 1.4rem;
+  }
+
+  .hero-logo {
+    height: clamp(2.8rem, 7vw, 5rem);
+    width: auto;
+    flex-shrink: 0;
+    object-fit: contain;
   }
 
   h1 {
@@ -328,7 +338,9 @@
 <body>
   <main class="page">
     <section class="hero">
+      <img class="hero-logo" src="assets/Logo-UC.png" alt="Pontificia Universidad Católica de Chile">
       <h1>Bicicleta Explotada</h1>
+      <img class="hero-logo" src="assets/Logo ingenieria.png" alt="Escuela de Ingeniería UC">
     </section>
 
     <section class="pieces-board" id="pieces-board" aria-label="Piezas de la bicicleta">
@@ -402,7 +414,7 @@ const PARTS = [
     shortName: 'Maneta',
     bg: '#f0ecfb',
     accent: '#5d4ba1',
-    position: { x: '16%', y: '33%', w: '13%', z: 6 },
+    position: { x: '16%', y: '35%', w: '13%', z: 6 },
     images: {
       p1: 'piezas/frenos p1.png',
       p2: 'piezas/freno con cambio abierto.png'
@@ -470,7 +482,7 @@ const PARTS = [
     shortName: 'Rueda',
     bg: '#f5efe7',
     accent: '#7c5932',
-    position: { x: '16.5%', y: '69%', w: '27%', z: 1 },
+    position: { x: '16.5%', y: '69%', w: '21%', z: 1 },
     images: {
       p1: 'piezas/rueda p1.png',
       p2: 'piezas/rueda p2.png'
@@ -505,7 +517,7 @@ const PARTS = [
     shortName: 'Rueda',
     bg: '#f5efe7',
     accent: '#7c5932',
-    position: { x: '83.5%', y: '69%', w: '27%', z: 1 },
+    position: { x: '83.5%', y: '69%', w: '21%', z: 1 },
     images: {
       p1: 'piezas/rueda p1.png',
       p2: 'piezas/rueda p2.png'
@@ -522,7 +534,7 @@ const PARTS = [
     shortName: 'Pinza',
     bg: '#fdeeee',
     accent: '#9c3535',
-    position: { x: '81.5%', y: '39%', w: '10%', z: 6 },
+    position: { x: '83.5%', y: '39%', w: '10%', z: 6 },
     images: {
       p1: 'piezas/pinza de freno p1.png',
       p2: 'piezas/pinza de freno p2.png'
@@ -540,7 +552,7 @@ const PARTS = [
     bg: '#f1efea',
     accent: '#57554f',
     preview: 'piezas/cadena p1.png',
-    position: { x: '69.5%', y: '68%', w: '10.5%', z: 6 },
+    position: { x: '66%', y: '68%', w: '8%', z: 6 },
     images: {
       p1: 'piezas/cadena p0.png',
       p2: 'piezas/cadena p1.png'
@@ -558,7 +570,7 @@ const PARTS = [
     preview: 'piezas/pedal p1.png',
     bg: '#f5efe8',
     accent: '#7a6246',
-    position: { x: '42%', y: '57%', w: '5.5%', z: 6 },
+    position: { x: '52%', y: '68%', w: '5.5%', z: 6 },
     images: {
       p1: 'piezas/pedal p0.png'
     },
@@ -574,7 +586,7 @@ const PARTS = [
     shortName: 'Biela + platos',
     bg: '#f8efdf',
     accent: '#94661b',
-    position: { x: '49.5%', y: '74%', w: '15%', z: 5 },
+    position: { x: '43%', y: '74%', w: '13%', z: 5 },
     images: {
       p1: 'piezas/biela p1.png',
       p2: 'piezas/biela p2.png'
@@ -591,7 +603,7 @@ const PARTS = [
     shortName: 'Desv. del.',
     bg: '#eef5f2',
     accent: '#2a7a5c',
-    position: { x: '43%', y: '62%', w: '8%', z: 6 },
+    position: { x: '43%', y: '52%', w: '8%', z: 6 },
     images: {
       p1: 'piezas/desviador delantero p1.png',
       p2: 'piezas/desviador delantero p2.png'
@@ -608,7 +620,7 @@ const PARTS = [
     shortName: 'Cassete',
     bg: '#fbf2e6',
     accent: '#8b5f1d',
-    position: { x: '61.5%', y: '73%', w: '8.5%', z: 5 },
+    position: { x: '58%', y: '73%', w: '8.5%', z: 5 },
     images: {
       p1: 'piezas/cassete p1.png'
     },
@@ -624,7 +636,7 @@ const PARTS = [
     shortName: 'Desv. tras.',
     bg: '#f2f0ec',
     accent: '#5c5648',
-    position: { x: '76%', y: '56%', w: '9%', z: 7 },
+    position: { x: '74%', y: '48%', w: '9%', z: 7 },
     images: {
       p1: 'piezas/desviador trasero p1.png',
       p2: 'piezas/desviador trasero p2.png'
@@ -641,7 +653,7 @@ const PARTS = [
     shortName: 'Biela izq.',
     bg: '#f3f0ea',
     accent: '#6e6252',
-    position: { x: '38.5%', y: '78%', w: '6.5%', z: 5 },
+    position: { x: '35.5%', y: '78%', w: '6.5%', z: 5 },
     images: {
       p1: 'piezas/pedal2 p1.png',
       p2: 'piezas/pedal2 p2.png'
@@ -659,7 +671,7 @@ const PARTS = [
     preview: 'piezas/pedal p1.png',
     bg: '#f5efe8',
     accent: '#7a6246',
-    position: { x: '34%', y: '85%', w: '5.5%', z: 6 },
+    position: { x: '31%', y: '85%', w: '5.5%', z: 6 },
     images: {
       p1: 'piezas/pedal p0.png'
     },
