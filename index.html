@@ -455,7 +455,8 @@ const PARTS = [
     accent: '#666055',
     position: { x: '66.5%', y: '15%', w: '6.5%', z: 4 },
     images: {
-      p1: 'piezas/tija p1.png'
+      p1: 'piezas/tija p1.png',
+      p2: 'piezas/tija p2.png'
     },
     materials: 'Aluminio anodizado, pernería de acero y cabeza de ajuste con abrazadera.',
     fn: 'Conecta el asiento con el cuadro y fija la altura de pedaleo. Un cambio pequeño en esta pieza modifica mucho la postura del cuerpo.',
@@ -584,6 +585,23 @@ const PARTS = [
     fact: 'La relación entre largo de biela y número de dientes define cómo se transforma la fuerza del cuerpo en desarrollo mecánico.'
   },
   {
+    id: 'desviador-delantero',
+    number: '15',
+    name: 'Desviador delantero',
+    shortName: 'Desv. del.',
+    bg: '#eef5f2',
+    accent: '#2a7a5c',
+    position: { x: '43%', y: '62%', w: '8%', z: 6 },
+    images: {
+      p1: 'piezas/desviador delantero p1.png',
+      p2: 'piezas/desviador delantero p2.png'
+    },
+    materials: 'Cuerpo de aluminio, guía móvil, resorte de retorno y cable de acero.',
+    fn: 'Empuja la cadena entre los platos delanteros para cambiar la relación de desarrollo en la transmisión delantera.',
+    eng: 'Debe alinear la cadena con precisión sobre cada corona sin rozar en marchas intermedias, actuando sobre una guía muy corta con poco margen de error.',
+    fact: 'El desviador delantero fue clave cuando las bicicletas pasaron de una sola a varias coronas en el plato; hoy muchas montañas usan un solo plato amplio y prescinden de él.'
+  },
+  {
     id: 'cassete',
     number: '12',
     name: 'Cassete',
@@ -598,6 +616,23 @@ const PARTS = [
     fn: 'Ofrece distintas relaciones de transmisión en la rueda trasera. Cambiar de piñón modifica el equilibrio entre fuerza y velocidad.',
     eng: 'El tamaño escalonado de los dientes permite variar desarrollo sin desmontar nada. Cada salto entre coronas modifica la cadencia disponible para el ciclista.',
     fact: 'El cassette reúne varios piñones en un solo cuerpo desmontable; esa modularidad facilita el cambio de relaciones y el mantenimiento.'
+  },
+  {
+    id: 'desviador-trasero',
+    number: '16',
+    name: 'Desviador trasero',
+    shortName: 'Desv. tras.',
+    bg: '#f2f0ec',
+    accent: '#5c5648',
+    position: { x: '76%', y: '56%', w: '9%', z: 7 },
+    images: {
+      p1: 'piezas/desviador trasero p1.png',
+      p2: 'piezas/desviador trasero p2.png'
+    },
+    materials: 'Jaula de aluminio, rodillos de guía, muelle de tensión, perno de fijación y cable.',
+    fn: 'Mueve la cadena entre los piñones del cassette trasero, ajustando la relación de marchas según el terreno y la cadencia.',
+    eng: 'Combina un brazo paralelogramático que sigue los piñones y un muelle que mantiene la tensión de cadena; el ángulo de la jaula define qué tan bien indexa cada salto.',
+    fact: 'El desviador trasero moderno consolidó la indexación por palanca en el siglo XX y sigue definiendo la precisión del cambio en transmisiones mecánicas.'
   },
   {
     id: 'biela-izquierda',
